@@ -1,0 +1,9 @@
+{
+  "name": "municipalities-coordinates",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "description": "A simple setup for getting a list of Norwegian municipalities and their coordinates"
+}
