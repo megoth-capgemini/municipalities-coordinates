@@ -15,4 +15,6 @@ export interface Municipality {
   identifier: number;
   prefLabel: string;
   status: string;
+  lat: string;
+  long: string;
 }

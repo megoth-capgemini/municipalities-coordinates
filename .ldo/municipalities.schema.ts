@@ -40,6 +40,22 @@ export const municipalitiesSchema: Schema = {
                 datatype: "http://www.w3.org/2001/XMLSchema#string",
               },
             },
+            {
+              type: "TripleConstraint",
+              predicate: "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+              valueExpr: {
+                type: "NodeConstraint",
+                datatype: "http://www.w3.org/2001/XMLSchema#float",
+              },
+            },
+            {
+              type: "TripleConstraint",
+              predicate: "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+              valueExpr: {
+                type: "NodeConstraint",
+                datatype: "http://www.w3.org/2001/XMLSchema#float",
+              },
+            },
           ],
         },
       },
