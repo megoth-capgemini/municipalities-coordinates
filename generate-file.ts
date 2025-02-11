@@ -10,6 +10,7 @@ const documentToParse = path.join(__dirname, "kommunenummer.ttl");
 const documentToWrite = path.join(__dirname, "kommunenummer-generated.ttl");
 const identifier = "http://purl.org/dc/terms/identifier";
 const VALID = "Gyldig";
+const VERBOSE = true;
 
 function removeDuplicates<T>(array: T[]): T[] {
   return [...new Set(array)];
@@ -28,7 +29,9 @@ async function getCoordinates(
   let simpleNames = [
     ...municipality.prefLabel.split(" - "),
     ...municipality.prefLabel.split(" – "),
-  ].map((name) => name.replace(/\Wi\W(.*)/, ""));
+  ]
+    .filter((name) => name.indexOf(" - ") === -1 && name.indexOf(" – ") === -1)
+    .map((name) => name.replace(/\Wi\W(.*)/, ""));
   const names = removeDuplicates([
     ...simpleNames,
     ...simpleNames.map((simpleName) => `${simpleName} Kommune`),
@@ -66,7 +69,9 @@ async function getCoordinates(
   const validCoordinates = coordinatesList.find(
     (coordinates) => !!coordinates[0],
   );
-  // console.log(`${names.join(", ")}: ${validCoordinates.join(", ")}`);
+  if (VERBOSE) {
+    console.log(`${names?.join(", ")}: ${validCoordinates?.join(", ")}`);
+  }
   municipality.lat = validCoordinates?.[0];
   municipality.long = validCoordinates?.[1];
   return municipality;
