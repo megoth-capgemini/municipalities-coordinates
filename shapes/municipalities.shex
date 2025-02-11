@@ -1,0 +1,14 @@
+PREFIX adms: <http://www.w3.org/ns/adms#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX shape: <#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+shape:Municipality {
+    dcterms:identifier xsd:integer ;
+    skos:prefLabel xsd:string ;
+    adms:status xsd:string ;
+
+}

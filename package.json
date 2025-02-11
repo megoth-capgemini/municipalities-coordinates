@@ -2,6 +2,7 @@
   "name": "municipalities-coordinates",
   "version": "0.0.1",
   "scripts": {
+    "build-ldo": "ldo build --input ./shapes --output ./.ldo",
     "generate-file": "tsx generate-file.ts",
     "type-check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,8 +10,16 @@
   "license": "MIT",
   "description": "A simple setup for getting a list of Norwegian municipalities and their coordinates",
   "devDependencies": {
+    "@ldo/cli": "^0.0.1-alpha.32",
     "@types/node": "^22.13.1",
+    "prettier": "^3.5.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@ldo/ldo": "^0.0.1-alpha.29",
+    "@rdfjs/data-model": "^2.1.0",
+    "@types/rdfjs__data-model": "^2.0.9",
+    "rdf-namespaces": "^1.12.0"
   }
 }
