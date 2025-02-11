@@ -11,6 +11,10 @@ const documentToWrite = path.join(__dirname, "kommunenummer-generated.ttl");
 const identifier = "http://purl.org/dc/terms/identifier";
 const VALID = "Gyldig";
 
+function removeDuplicates<T>(array: T[]): T[] {
+  return [...new Set(array)];
+}
+
 async function parse() {
   return parseRdf(fs.readFileSync(documentToParse, "utf8"));
 }
@@ -21,7 +25,14 @@ const filterPlaceOfType = (type: string) => (place) =>
 async function getCoordinates(
   municipality: Municipality,
 ): Promise<Municipality> {
-  const names = municipality.prefLabel.split(" - ");
+  let simpleNames = [
+    ...municipality.prefLabel.split(" - "),
+    ...municipality.prefLabel.split(" – "),
+  ].map((name) => name.replace(/\Wi\W(.*)/, ""));
+  const names = removeDuplicates([
+    ...simpleNames,
+    ...simpleNames.map((simpleName) => `${simpleName} Kommune`),
+  ]);
   const coordinatesList = await Promise.all(
     names.map(async (name) => {
       const simpleName = name.replace(/\Wi\W(.*)/, "");
@@ -36,17 +47,17 @@ async function getCoordinates(
       const places = (await response.json())["navn"];
       const municipalities = places.filter(filterPlaceOfType("Kommune"));
       const townships = places.filter(filterPlaceOfType("Tettsted"));
-      const islands = [
-        ...places.filter(filterPlaceOfType("Øygruppe i sjø")),
-        ...places.filter(filterPlaceOfType("Øy i sjø")),
-      ];
+      const islandGroups = places.filter(filterPlaceOfType("Øygruppe i sjø"));
+      const islands = places.filter(filterPlaceOfType("Øy i sjø"));
       return [
         municipalities[0]?.representasjonspunkt["nord"] ||
           townships[0]?.representasjonspunkt["nord"] ||
+          islandGroups[0]?.representasjonspunkt["nord"] ||
           islands[0]?.representasjonspunkt["nord"] ||
           places[0]?.representasjonspunkt["nord"],
         municipalities[0]?.representasjonspunkt["øst"] ||
           townships[0]?.representasjonspunkt["øst"] ||
+          islandGroups[0]?.representasjonspunkt["øst"] ||
           islands[0]?.representasjonspunkt["øst"] ||
           places[0]?.representasjonspunkt["øst"],
       ];
@@ -55,6 +66,7 @@ async function getCoordinates(
   const validCoordinates = coordinatesList.find(
     (coordinates) => !!coordinates[0],
   );
+  // console.log(`${names.join(", ")}: ${validCoordinates.join(", ")}`);
   municipality.lat = validCoordinates?.[0];
   municipality.long = validCoordinates?.[1];
   return municipality;
