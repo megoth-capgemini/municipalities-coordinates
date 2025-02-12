@@ -26,9 +26,9 @@ for municipality in g.query(
         }
         """):
     writer.add_document(name=str(municipality.name),
-                        id=int(str(municipality.id)),
-                        lat=float(str(municipality.lat)),
-                        long=float(str(municipality.long)))
+                        id=int(municipality.id),
+                        lat=float(municipality.lat),
+                        long=float(municipality.long))
 writer.commit()
 
 from whoosh.qparser import QueryParser
