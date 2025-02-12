@@ -7,7 +7,7 @@ import { Municipality } from "./.ldo/municipalities.typings";
 import { writeFileSync } from "node:fs";
 
 const documentToParse = path.join(__dirname, "kommunenummer.ttl");
-const documentToWrite = path.join(__dirname, "kommunenummer-generated.ttl");
+const documentToWrite = path.join(__dirname, "kommunenummer-koordinater.ttl");
 const identifier = "http://purl.org/dc/terms/identifier";
 const VALID = "Gyldig";
 const VERBOSE = true;
