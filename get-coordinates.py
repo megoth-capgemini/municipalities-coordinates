@@ -36,7 +36,7 @@ from whoosh.query import FuzzyTerm
 
 
 class MyFuzzyTerm(FuzzyTerm):
-    def __init__(self, fieldname, text, boost=1.0, maxdist=1, prefixlength=1, constantscore=True):
+    def __init__(self, fieldname, text, boost=1.0, maxdist=2, prefixlength=1, constantscore=True):
         super(MyFuzzyTerm, self).__init__(fieldname, text, boost, maxdist, prefixlength, constantscore)
 
 
@@ -49,11 +49,14 @@ def search(query):
             print(result)
     print("---")
 
-print("SEARCH TESTS")
-print("---")
-search("Osl")
-search("Bø")
-search("Svalbard")
-search("Jan Mayen")
-search("Herøy")
-search("Våler")
+# print("---")
+# search("Osl")
+# search("Svalbard")
+# search("Herøy")
+# search("Våler")
+
+while True:
+    query = input("Search for municipality: ")
+    if query == "":
+        break
+    search(query)
