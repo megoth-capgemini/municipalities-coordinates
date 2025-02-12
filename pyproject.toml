@@ -1,0 +1,22 @@
+[project]
+name = "municipalities-coordinates"
+version = "0.0.1"
+description = ""
+authors = [
+    { name = "Arne Hassel", email = "arne.hassel@capgemini.com" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.13,<4.0.0"
+dependencies = [
+    "rdflib (>=7.1.3,<8.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+package-mode = false
