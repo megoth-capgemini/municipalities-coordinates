@@ -40,10 +40,10 @@ class MyFuzzyTerm(FuzzyTerm):
         super(MyFuzzyTerm, self).__init__(fieldname, text, boost, maxdist, prefixlength, constantscore)
 
 
-def search(query):
-    print(f"Searching for {query}")
+def search(query_string):
+    print(f"Searching for {query_string}")
     with ix.searcher() as searcher:
-        query = QueryParser("name", ix.schema, termclass=MyFuzzyTerm).parse(query)
+        query = QueryParser("name", ix.schema, termclass=MyFuzzyTerm).parse(query_string)
         results = searcher.search(query)
         for result in results:
             print(result)
@@ -56,7 +56,7 @@ def search(query):
 # search("Våler")
 
 while True:
-    query = input("Search for municipality: ")
-    if query == "":
+    query_input = input("Search for municipality: ")
+    if query_input == "":
         break
-    search(query)
+    search(query_input)
