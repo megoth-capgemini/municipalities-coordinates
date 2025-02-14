@@ -18,12 +18,12 @@ export const municipalitiesContext: LdoJsonldContext = {
     "@id": "http://www.w3.org/ns/adms#status",
     "@type": "http://www.w3.org/2001/XMLSchema#string",
   },
-  lat: {
-    "@id": "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+  latitude: {
+    "@id": "https://schema.org/geo#latitude",
     "@type": "http://www.w3.org/2001/XMLSchema#float",
   },
-  long: {
-    "@id": "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+  longitude: {
+    "@id": "https://schema.org/geo#longitude",
     "@type": "http://www.w3.org/2001/XMLSchema#float",
   },
 };

@@ -72,8 +72,8 @@ async function getCoordinates(
   if (VERBOSE) {
     console.log(`${names?.join(", ")}: ${validCoordinates?.join(", ")}`);
   }
-  municipality.lat = validCoordinates?.[0];
-  municipality.long = validCoordinates?.[1];
+  municipality.latitude = validCoordinates?.[0];
+  municipality.longitude = validCoordinates?.[1];
   return municipality;
 }
 
@@ -108,7 +108,7 @@ async function main() {
     try {
       const municipality = await getCoordinates(municipalities[i]);
       municipalitiesWithCoordinates.push(municipality);
-      if (!municipality.lat || !municipality.long) {
+      if (!municipality.latitude || !municipality.longitude) {
         console.log(
           `${i + 1}/${municipalities.length}: Did not find coordinates for ${municipality.prefLabel} (${municipality.identifier})`,
         );

@@ -42,7 +42,7 @@ export const municipalitiesSchema: Schema = {
             },
             {
               type: "TripleConstraint",
-              predicate: "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+              predicate: "https://schema.org/geo#latitude",
               valueExpr: {
                 type: "NodeConstraint",
                 datatype: "http://www.w3.org/2001/XMLSchema#float",
@@ -50,7 +50,7 @@ export const municipalitiesSchema: Schema = {
             },
             {
               type: "TripleConstraint",
-              predicate: "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+              predicate: "https://schema.org/geo#longitude",
               valueExpr: {
                 type: "NodeConstraint",
                 datatype: "http://www.w3.org/2001/XMLSchema#float",

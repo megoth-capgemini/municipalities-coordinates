@@ -12,7 +12,7 @@ writer = ix.writer()
 for municipality in g.query(
         """
         PREFIX dc: <http://purl.org/dc/terms/>
-        PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+        PREFIX geo: <https://schema.org/geo#>
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         
@@ -21,8 +21,8 @@ for municipality in g.query(
             ?municipality rdf:type skos:Concept .
             ?municipality skos:prefLabel ?name . 
             ?municipality dc:identifier ?id . 
-            ?municipality geo:lat ?lat . 
-            ?municipality geo:long ?long . 
+            ?municipality geo:latitude ?lat . 
+            ?municipality geo:longitude ?long . 
         }
         """):
     writer.add_document(name=str(municipality.name),
