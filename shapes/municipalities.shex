@@ -1,8 +1,8 @@
 PREFIX adms: <http://www.w3.org/ns/adms#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX geo: <https://schema.org/geo#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <https://schema.org/>
 PREFIX shape: <#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -11,7 +11,7 @@ shape:Municipality {
     dcterms:identifier xsd:integer ;
     skos:prefLabel xsd:string ;
     adms:status xsd:string ;
-    geo:latitude xsd:float ;
-    geo:longitude xsd:float ;
+    schema:latitude xsd:float ;
+    schema:longitude xsd:float ;
 
 }

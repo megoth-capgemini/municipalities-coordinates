@@ -19,11 +19,11 @@ export const municipalitiesContext: LdoJsonldContext = {
     "@type": "http://www.w3.org/2001/XMLSchema#string",
   },
   latitude: {
-    "@id": "https://schema.org/geo#latitude",
+    "@id": "https://schema.org/latitude",
     "@type": "http://www.w3.org/2001/XMLSchema#float",
   },
   longitude: {
-    "@id": "https://schema.org/geo#longitude",
+    "@id": "https://schema.org/longitude",
     "@type": "http://www.w3.org/2001/XMLSchema#float",
   },
 };
