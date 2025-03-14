@@ -132,3 +132,6 @@ dist
 
 # Swhoosh
 .swhoosh
+
+# Poetry
+__pycache__
