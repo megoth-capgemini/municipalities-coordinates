@@ -17,7 +17,7 @@ schema = Schema(url=TEXT(stored=True),
                 id=NUMERIC(stored=True),
                 lat=NUMERIC(stored=True),
                 long=NUMERIC(stored=True))
-ix = create_in(".swhoosh", schema)
+ix = create_in(".whoosh", schema)
 writer = ix.writer()
 municipalities = g.query("""
         PREFIX dc: <http://purl.org/dc/terms/>
