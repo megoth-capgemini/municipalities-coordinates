@@ -1,4 +1,5 @@
-import SearchName from "../search-name";
+import SearchByName from "../search-by-name";
+import SearchByProximity from "../search-by-proximity";
 
 export default function FrontPage() {
   return (
@@ -17,10 +18,11 @@ export default function FrontPage() {
       </div>
       <article className="block">
         <h2 className="title is-4">Search by name</h2>
-        <SearchName />
+        <SearchByName />
       </article>
       <article className="block">
         <h2 className="title is-4">Search by coordinates</h2>
+        <SearchByProximity />
       </article>
     </div>
   );

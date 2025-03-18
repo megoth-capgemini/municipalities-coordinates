@@ -1,10 +1,20 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import clsx from "clsx";
+import { ReactNode, useEffect, useState } from "react";
 import usePrism from "../../hooks/use-prism";
+import { SubmitHandler, type UseFormReturn } from "react-hook-form";
 
-const SEARCH_API = "http://localhost:8000/name/";
-const MODES = [
+export type Mode = {
+  name: string;
+  media_format: string;
+  prism_format: string;
+};
+
+interface Props {
+  children: ReactNode;
+  form: UseFormReturn<any>;
+  onSubmit: (data: any) => Promise<[string, Mode] | undefined>;
+}
+
+export const MODES: Array<Mode> = [
   { name: "JSON", media_format: "application/json", prism_format: "json" },
   {
     name: "JSON-LD",
@@ -15,60 +25,32 @@ const MODES = [
   { name: "RDF/XML", media_format: "application/rdf+xml", prism_format: "xml" },
 ];
 
-interface FormData {
-  name: string;
-  media_format: string;
-}
-
-export default function SearchName() {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<FormData>();
+export default function SearchForm({
+  children,
+  form: { handleSubmit, register },
+  onSubmit,
+}: Props) {
   const highlightAll = usePrism();
   const [result, setResult] = useState<string>("");
   const [prismFormat, setPrismFormat] = useState<string>(MODES[0].prism_format);
 
   useEffect(() => highlightAll(), [result]);
 
-  const onSubmit: SubmitHandler<FormData> = async ({ name, media_format }) => {
-    if (!name) return;
-    const response = await fetch(SEARCH_API + name, {
-      headers: { Accept: media_format },
-    });
-    const responseText = await response.text();
-    setResult(
-      media_format === "application/json"
-        ? JSON.stringify(JSON.parse(responseText), null, 2)
-        : responseText,
-    );
-    setPrismFormat(
-      (MODES.find((mode) => mode.media_format === media_format) || MODES[0])
-        .prism_format,
-    );
+  const onSubmitExtended: SubmitHandler<any> = async (data) => {
+    const response = await onSubmit(data);
+    if (!response) return;
+    setResult(response[0]);
+    setPrismFormat(response[1].prism_format);
     highlightAll();
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)} onReset={() => setResult("")}>
-        <div className="field">
-          <label className="label">Name</label>
-          <div className="control">
-            <input
-              className={clsx("input", {
-                "is-danger": errors.name,
-              })}
-              defaultValue="Oslo"
-              placeholder="Name of municipality"
-              {...register("name", { required: true })}
-            />
-          </div>
-          {errors.name && (
-            <div className="help is-danger">Please provide a value</div>
-          )}
-        </div>
+      <form
+        onSubmit={handleSubmit(onSubmitExtended)}
+        onReset={() => setResult("")}
+      >
+        {children}
         <div className="field">
           <div className="control">
             <div className="select">
