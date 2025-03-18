@@ -15,11 +15,11 @@ export default function FrontPage() {
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
       </div>
-      <article className="section">
+      <article className="block">
         <h2 className="title is-4">Search by name</h2>
         <SearchName />
       </article>
-      <article className="section">
+      <article className="block">
         <h2 className="title is-4">Search by coordinates</h2>
       </article>
     </div>
