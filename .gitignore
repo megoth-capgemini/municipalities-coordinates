@@ -131,7 +131,7 @@ dist
 .pnp.*
 
 # Swhoosh
-.swhoosh
+.whoosh
 
 # Poetry
 __pycache__
