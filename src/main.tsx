@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FrontPage from "./components/front-page";
-import "bulma/css/bulma.min.css";
+import "bulma/css/versions/bulma-no-helpers-prefixed.css";
 import "./styles/global.css";
 
 const router = createBrowserRouter([

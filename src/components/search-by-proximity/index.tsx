@@ -14,6 +14,7 @@ interface FormData {
 export default function SearchByProximity() {
   const form = useForm<FormData>();
   const {
+    clearErrors,
     register,
     formState: { errors },
     setValue,
@@ -38,20 +39,21 @@ export default function SearchByProximity() {
     navigator.geolocation.getCurrentPosition((position) => {
       setValue("lat", position.coords.latitude);
       setValue("long", position.coords.longitude);
+      clearErrors();
     });
   };
 
   return (
     <SearchForm form={form} onSubmit={onSubmit}>
-      <div className="field">
-        <label className="label">Coordinates</label>
-        <div className="field is-horizontal">
-          <div className="field-body">
-            <div className="field">
-              <div className="control">
+      <div className="bulma-field">
+        <label className="bulma-label">Coordinates</label>
+        <div className="bulma-field bulma-is-horizontal">
+          <div className="bulma-field-body">
+            <div className="bulma-field">
+              <div className="bulma-control">
                 <input
-                  className={clsx("input", {
-                    "is-danger": errors.lat,
+                  className={clsx("bulma-input", {
+                    "bulma-is-danger": errors.lat,
                   })}
                   placeholder="Latitude"
                   type="string"
@@ -59,11 +61,11 @@ export default function SearchByProximity() {
                 />
               </div>
             </div>
-            <div className="field">
-              <div className="control">
+            <div className="bulma-field">
+              <div className="bulma-control">
                 <input
-                  className={clsx("input", {
-                    "is-danger": errors.long,
+                  className={clsx("bulma-input", {
+                    "bulma-is-danger": errors.long,
                   })}
                   placeholder="Longitude"
                   type="string"
@@ -71,9 +73,9 @@ export default function SearchByProximity() {
                 />
               </div>
             </div>
-            <div className="field">
+            <div className="bulma-field">
               <button
-                className="button is-light"
+                className="bulma-button bulma-is-light"
                 type="button"
                 onClick={getCoordinates}
               >
@@ -81,10 +83,12 @@ export default function SearchByProximity() {
               </button>
             </div>
           </div>
-          {(errors.lat || errors.long) && (
-            <div className="help is-danger">Please provide coordinates</div>
-          )}
         </div>
+        {(errors.lat || errors.long) && (
+          <div className="bulma-help bulma-is-danger">
+            Please provide coordinates
+          </div>
+        )}
       </div>
     </SearchForm>
   );

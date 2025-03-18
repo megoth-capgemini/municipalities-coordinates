@@ -1,6 +1,6 @@
-.container:not(.is-max-tablet):not(.is-max-desktop):not(.is-max-widescreen) {
+.bulma-container:not(.bulma-is-max-tablet):not(.bulma-is-max-desktop):not(.bulma-is-max-widescreen) {
     margin: 0.5rem 1rem;
-    max-width: 70ch;
+    max-width: 90ch;
     width: auto;
 
     @media screen and (min-width: 769px) {

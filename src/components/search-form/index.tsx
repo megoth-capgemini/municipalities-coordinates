@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import usePrism from "../../hooks/use-prism";
 import { SubmitHandler, type UseFormReturn } from "react-hook-form";
+import clsx from "clsx";
 
 export type Mode = {
   name: string;
@@ -27,59 +28,76 @@ export const MODES: Array<Mode> = [
 
 export default function SearchForm({
   children,
-  form: { handleSubmit, register },
+  form: { clearErrors, handleSubmit, setValue },
   onSubmit,
 }: Props) {
   const highlightAll = usePrism();
   const [result, setResult] = useState<string>("");
-  const [prismFormat, setPrismFormat] = useState<string>(MODES[0].prism_format);
+  const [selectedMode, setSelectedMode] = useState<Mode>(MODES[0]);
+  const [language, setLanguage] = useState<string>(MODES[0].prism_format);
 
+  useEffect(() => setValue("media_format", selectedMode.media_format), []);
   useEffect(() => highlightAll(), [result]);
 
   const onSubmitExtended: SubmitHandler<any> = async (data) => {
     const response = await onSubmit(data);
     if (!response) return;
     setResult(response[0]);
-    setPrismFormat(response[1].prism_format);
+    setSelectedMode(response[1]);
+    setLanguage(response[1].prism_format);
     highlightAll();
   };
 
   return (
-    <div>
+    <div className="bulma-box">
       <form
         onSubmit={handleSubmit(onSubmitExtended)}
-        onReset={() => setResult("")}
+        onReset={() => {
+          setResult("");
+          setSelectedMode(MODES[0]);
+          setLanguage(MODES[0].prism_format);
+          clearErrors();
+        }}
       >
         {children}
-        <div className="field">
-          <div className="control">
-            <div className="select">
-              <select {...register("media_format")}>
-                {MODES.map((mode) => (
-                  <option key={mode.media_format} value={mode.media_format}>
-                    {mode.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+        <div className="bulma-field">
+          <label className="bulma-label">Response format</label>
+          <div className="bulma-field bulma-has-addons">
+            {MODES.map((mode) => (
+              <div className="bulma-control" key={mode.media_format}>
+                <button
+                  className={clsx("bulma-button", {
+                    "bulma-is-link": selectedMode === mode,
+                  })}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setValue("media_format", mode.media_format);
+                    setSelectedMode(mode);
+                  }}
+                  type="button"
+                >
+                  {mode.name}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="field is-grouped">
-          <div className="control">
-            <button className="button is-primary" type="submit">
+        <div className="bulma-field bulma-is-grouped">
+          <div className="bulma-control">
+            <button className="bulma-button bulma-is-primary" type="submit">
               Submit
             </button>
           </div>
-          <div className="control">
-            <button className="button is-light" type="reset">
+          <div className="bulma-control">
+            <button className="bulma-button bulma-is-light" type="reset">
               Reset
             </button>
           </div>
         </div>
       </form>
-      {result && (
-        <pre className={`language-${prismFormat}`}>
-          <code className={`language-${prismFormat}`}>{result}</code>
+      {result && language && (
+        <pre className={`language-${language} line-numbers`}>
+          <code className={`language-${language}`}>{result}</code>
         </pre>
       )}
     </div>

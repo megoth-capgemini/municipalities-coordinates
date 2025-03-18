@@ -32,19 +32,21 @@ export default function SearchByName() {
 
   return (
     <SearchForm form={form} onSubmit={onSubmit}>
-      <div className="field">
-        <label className="label">Name</label>
-        <div className="control">
+      <div className="bulma-field">
+        <label className="bulma-label">Name</label>
+        <div className="bulma-control">
           <input
-            className={clsx("input", {
-              "is-danger": errors.name,
+            className={clsx("bulma-input", {
+              "bulma-is-danger": errors.name,
             })}
             placeholder="Name of municipality"
             {...register("name", { required: true })}
           />
         </div>
         {errors.name && (
-          <div className="help is-danger">Please provide a value</div>
+          <div className="bulma-help bulma-is-danger">
+            Please provide a value
+          </div>
         )}
       </div>
     </SearchForm>
