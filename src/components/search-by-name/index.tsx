@@ -17,7 +17,7 @@ export default function SearchByName() {
     formState: { errors },
   } = form;
 
-  const getUrl = ({ name }: FormData): string => SEARCH_API + encodeURI(name);
+  const getUrl = ({ name }: FormData): string => SEARCH_API + name;
 
   return (
     <SearchForm form={form} getUrl={getUrl}>

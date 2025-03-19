@@ -9,11 +9,12 @@ def build():
     writer = index.writer()
     for municipality in get_municipalities():
         writer.add_document(url=str(municipality.url),
-                            name=str(municipality.name.encode("utf-8")),
+                            name=str(municipality.name),
                             id=int(municipality.id),
                             lat=float(municipality.lat),
                             long=float(municipality.long))
     writer.commit()
+    print("Index built")
 
 
 if __name__ == "__main__":
