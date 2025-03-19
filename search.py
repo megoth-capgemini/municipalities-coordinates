@@ -89,6 +89,7 @@ def open_index():
 
 
 def search_municipality_coords(lat: float, long: float):
+    print(f"Searching for {lat}, {long}")
     return sorted([{
         "id": municipality["id"],
         "name": municipality["name"],
@@ -100,6 +101,7 @@ def search_municipality_coords(lat: float, long: float):
 
 
 def search_municipality_name(index: FileIndex, query_string):
+    print(f"Searching for {query_string}")
     query = QueryParser("name", index.schema, termclass=MyFuzzyTerm).parse(query_string)
     return [{
         "id": row.get("id"),

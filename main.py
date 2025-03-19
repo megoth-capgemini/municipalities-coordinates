@@ -43,8 +43,8 @@ def search_municipality_by_coords(request: Request, lat: float, long: float):
 
 
 @app.get("/name/{query}")
-def search_municipality_by_name(request: Request, query: str):
-    results = search_municipality_name(index, query)
+def search_municipality_by_name(request: Request, query):
+    results = search_municipality_name(index, query.encode("utf-8").decode("utf-8"))
     return search_response(request, results)
 
 
