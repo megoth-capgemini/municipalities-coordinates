@@ -14,6 +14,11 @@ FORMAT_TURTLE = "text/turtle"
 app = FastAPI()
 index = open_index()
 
+import subprocess
+
+subprocess.run(["npm", "run", "build-web"])
+frontpage = open("./dist/index.html", "r").read()
+
 
 def search_response(request: Request, results):
     media_format = request.headers.get("Accept")
@@ -28,9 +33,6 @@ def search_response(request: Request, results):
         "url": result["url"],
         "score": result["score"],
     } for result in results])
-
-
-frontpage = open("./dist/index.html", "r").read()
 
 
 @app.get("/")
