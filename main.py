@@ -44,9 +44,12 @@ def search_municipality_by_coords(request: Request, lat: float, long: float):
     return search_response(request, results)
 
 
+from urllib.parse import unquote
+
+
 @app.get("/name/{query}")
 def search_municipality_by_name(request: Request, query: str):
-    decoded_query = f"{query}".casefold()
+    decoded_query = unquote(query)
     results = search_municipality_name(index, query_string=decoded_query)
     return search_response(request, results)
 
