@@ -1,7 +1,4 @@
-from rdflib import Graph, URIRef, RDF, SKOS, DC, Literal, Namespace
-from starlette.requests import Request
-from starlette.responses import PlainTextResponse
-from whoosh.searching import Results
+from rdflib import Graph, SKOS, DC, Namespace
 
 INDEX_DIR = ".whoosh"
 INDEX_NAME = "municipalities"
@@ -26,6 +23,10 @@ WHERE {
     ?url schema:longitude ?long . 
 }
 """)
+
+
+def get_graph():
+    return g
 
 
 def get_municipalities():
@@ -58,27 +59,15 @@ def open_index():
     return open_dir(INDEX_DIR, schema=schema, indexname=INDEX_NAME)
 
 
-def get_linked_response(request: Request, results: Results):
-    graph = Graph()
-
-    for result in results:
-        municipality = URIRef(result.get("url"))
-        graph.add((municipality, RDF.type, SKOS.Concept))
-        graph.add((municipality, DC.identifier, (Literal(result["id"]))))
-        graph.add((municipality, SKOS.prefLabel, (Literal(result["name"]))))
-        graph.add((municipality, SCHEMA.latitude, (Literal(result["lat"]))))
-        graph.add((municipality, SCHEMA.longitude, (Literal(result["long"]))))
-        graph.add((municipality, AMV.accuracy, (Literal(result["score"]))))
-
-    media_format = request.headers.get("Accept")
-    return PlainTextResponse(graph.serialize(format=media_format,
-                                             context={
-                                                 "amv": str(AMV),
-                                                 "dc": str(DC),
-                                                 "kommunenummer": "https://register.geonorge.no/sosi-kodelister/inndelinger/inndelingsbase/kommunenummer/",
-                                                 "schema": str(SCHEMA),
-                                                 "skos": str(SKOS),
-                                             }), media_type=media_format)
+def serialize(graph: Graph, format: str):
+    return graph.serialize(format=format,
+                           context={
+                               "amv": str(AMV),
+                               "dc": str(DC),
+                               "kommunenummer": "https://register.geonorge.no/sosi-kodelister/inndelinger/inndelingsbase/kommunenummer/",
+                               "schema": str(SCHEMA),
+                               "skos": str(SKOS),
+                           })
 
 
 from geopy import distance
