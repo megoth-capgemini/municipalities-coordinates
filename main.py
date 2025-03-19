@@ -5,14 +5,14 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.staticfiles import StaticFiles
 
-from search import get_searcher, search_municipality_name, get_linked_response, search_municipality_coords
+from search import search_municipality_name, get_linked_response, search_municipality_coords, open_index
 
 FORMAT_JSONLD = "application/ld+json"
 FORMAT_RDFXML = "application/rdf+xml"
 FORMAT_TURTLE = "text/turtle"
 
 app = FastAPI()
-searcher = get_searcher()
+index = open_index()
 
 
 def search_response(request: Request, results):
@@ -31,14 +31,14 @@ def search_response(request: Request, results):
 
 
 @app.get("/coords/{lat}/{long}")
-def search_municipality(request: Request, lat: float, long: float):
+def search_municipality_by_coords(request: Request, lat: float, long: float):
     results = search_municipality_coords(lat, long)
     return search_response(request, results)
 
 
 @app.get("/name/{query}")
-def search_municipality(request: Request, query: str):
-    results = search_municipality_name(searcher, query)
+def search_municipality_by_name(request: Request, query: str):
+    results = search_municipality_name(index, query)
     return search_response(request, results)
 
 

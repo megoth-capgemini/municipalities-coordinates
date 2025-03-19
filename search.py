@@ -1,15 +1,33 @@
 from rdflib import Graph, URIRef, RDF, SKOS, DC, Literal, Namespace
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
-from whoosh.searching import Searcher, Results
+from whoosh.searching import Results
+
+INDEX_DIR = ".whoosh"
+INDEX_NAME = "municipalities"
 
 SCHEMA = Namespace("https://schema.org/")
 AMV = Namespace("https://w3id.org/amv#")
 
 g = Graph()
 g.parse('kommunenummer-koordinater.ttl')
+municipalities = g.query("""
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX schema: <https://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-from whoosh.index import create_in
+SELECT ?url ?name ?id ?lat ?long
+WHERE {
+    ?url rdf:type skos:Concept .
+    ?url skos:prefLabel ?name . 
+    ?url dc:identifier ?id . 
+    ?url schema:latitude ?lat . 
+    ?url schema:longitude ?long . 
+}
+""")
+
+from whoosh.index import create_in, open_dir, FileIndex
 from whoosh.fields import Schema, TEXT, NUMERIC
 
 schema = Schema(url=TEXT(stored=True),
@@ -17,30 +35,20 @@ schema = Schema(url=TEXT(stored=True),
                 id=NUMERIC(stored=True),
                 lat=NUMERIC(stored=True),
                 long=NUMERIC(stored=True))
-ix = create_in(".whoosh", schema)
-writer = ix.writer()
-municipalities = g.query("""
-        PREFIX dc: <http://purl.org/dc/terms/>
-        PREFIX schema: <https://schema.org/>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-        
-        SELECT ?url ?name ?id ?lat ?long
-        WHERE {
-            ?url rdf:type skos:Concept .
-            ?url skos:prefLabel ?name . 
-            ?url dc:identifier ?id . 
-            ?url schema:latitude ?lat . 
-            ?url schema:longitude ?long . 
-        }
-        """)
-for municipality in municipalities:
-    writer.add_document(url=str(municipality.url),
-                        name=str(municipality.name),
-                        id=int(municipality.id),
-                        lat=float(municipality.lat),
-                        long=float(municipality.long))
-writer.commit()
+
+
+def build():
+    index = create_in(INDEX_DIR, schema, indexname=INDEX_NAME)
+    writer = index.writer()
+    for municipality in municipalities:
+        writer.add_document(url=str(municipality.url),
+                            name=str(municipality.name),
+                            id=int(municipality.id),
+                            lat=float(municipality.lat),
+                            long=float(municipality.long))
+    writer.commit()
+    return index
+
 
 from whoosh.qparser import QueryParser
 from whoosh.query import FuzzyTerm
@@ -74,11 +82,10 @@ def get_linked_response(request: Request, results: Results):
                                              }), media_type=media_format)
 
 
-def get_searcher():
-    return ix.searcher()
-
-
 from geopy import distance
+
+def open_index():
+    return open_dir(INDEX_DIR, schema=schema, indexname=INDEX_NAME)
 
 
 def search_municipality_coords(lat: float, long: float):
@@ -92,26 +99,27 @@ def search_municipality_coords(lat: float, long: float):
     } for municipality in municipalities], key=lambda d: d["score"])[:5]
 
 
-def search_municipality_name(searcher: Searcher, query_string):
-    query = QueryParser("name", ix.schema, termclass=MyFuzzyTerm).parse(query_string)
+def search_municipality_name(index: FileIndex, query_string):
+    query = QueryParser("name", index.schema, termclass=MyFuzzyTerm).parse(query_string)
     return [{
-        "id": result.get("id"),
-        "name": result.get("name"),
-        "lat": result.get("lat"),
-        "long": result.get("long"),
-        "url": result.get("url"),
-        "score": result.score,
-    } for result in searcher.search(query)]
+        "id": row.get("id"),
+        "name": row.get("name"),
+        "lat": row.get("lat"),
+        "long": row.get("long"),
+        "url": row.get("url"),
+        "score": row.score,
+    } for row in index.searcher().search(query)]
 
 
 if __name__ == "__main__":
-    with get_searcher() as searcher:
+    ix = build()
+    with ix.searcher() as searcher:
         while True:
             query_input = input("Search for municipality: ")
             if query_input == "":
                 break
             print(f"Searching for {query_input}")
-            results = search_municipality_name(searcher, query_input)
+            results = search_municipality_name(ix, query_input)
             for result in results:
                 print(result)
             print("---")

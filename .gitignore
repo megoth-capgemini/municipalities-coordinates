@@ -130,8 +130,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Swhoosh
-.whoosh
-
 # Poetry
 __pycache__
