@@ -1,19 +1,18 @@
 import { type MouseEvent } from "react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
-import SearchForm, { Mode, MODES } from "../search-form";
+import SearchForm, { FormData } from "../search-form";
 
 // @ts-ignore
 const SEARCH_API = import.meta.env.VITE_PROXIMITY_API_URL || "/coords/";
 
-interface FormData {
+interface ProximityFormData extends FormData {
   lat: number;
   long: number;
-  media_format: string;
 }
 
 export default function SearchByProximity() {
-  const form = useForm<FormData>();
+  const form = useForm<ProximityFormData>();
   const {
     clearErrors,
     register,
@@ -21,19 +20,8 @@ export default function SearchByProximity() {
     setValue,
   } = form;
 
-  const onSubmit = async ({ lat, long, media_format }: FormData) => {
-    if (!lat || !long) return;
-    const response = await fetch(`${SEARCH_API}${lat}/${long}`, {
-      headers: { Accept: media_format },
-    });
-    const responseText = await response.text();
-    return [
-      media_format === "application/json"
-        ? JSON.stringify(JSON.parse(responseText), null, 2)
-        : responseText,
-      MODES.find((mode) => mode.media_format === media_format) || MODES[0],
-    ] as [string, Mode];
-  };
+  const getUrl = ({ lat, long }: ProximityFormData) =>
+    `${SEARCH_API}${lat}/${long}`;
 
   const getCoordinates = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -45,7 +33,7 @@ export default function SearchByProximity() {
   };
 
   return (
-    <SearchForm form={form} onSubmit={onSubmit}>
+    <SearchForm form={form} getUrl={getUrl}>
       <div className="bulma-field">
         <label className="bulma-label">Coordinates</label>
         <div className="bulma-field bulma-is-horizontal">

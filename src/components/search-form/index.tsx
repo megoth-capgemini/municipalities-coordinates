@@ -9,10 +9,14 @@ export type Mode = {
   prism_format: string;
 };
 
+export interface FormData {
+  media_format: string;
+}
+
 interface Props {
   children: ReactNode;
   form: UseFormReturn<any>;
-  onSubmit: (data: any) => Promise<[string, Mode] | undefined>;
+  getUrl: (data: any) => string;
 }
 
 export const MODES: Array<Mode> = [
@@ -29,9 +33,10 @@ export const MODES: Array<Mode> = [
 export default function SearchForm({
   children,
   form: { clearErrors, handleSubmit, setValue },
-  onSubmit,
+  getUrl,
 }: Props) {
   const highlightAll = usePrism();
+  const [url, setUrl] = useState<string>("");
   const [result, setResult] = useState<string>("");
   const [selectedMode, setSelectedMode] = useState<Mode>(MODES[0]);
   const [language, setLanguage] = useState<string>(MODES[0].prism_format);
@@ -39,18 +44,32 @@ export default function SearchForm({
   useEffect(() => setValue("media_format", selectedMode.media_format), []);
   useEffect(() => highlightAll(), [result]);
 
-  const onSubmitExtended: SubmitHandler<any> = async (data) => {
-    const response = await onSubmit(data);
-    if (!response) return;
-    setResult(response[0]);
-    setSelectedMode(response[1]);
-    setLanguage(response[1].prism_format);
+  const onSubmitExtended: SubmitHandler<FormData> = async (data) => {
+    const url = getUrl(data);
+    const response = await fetch(url, {
+      headers: { Accept: data.media_format },
+    });
+    const mediaFormat = response.headers.get("content-type");
+    const responseText = await response.text();
+    const mode =
+      MODES.find((mode) => mediaFormat?.indexOf(mode.media_format) !== -1) ||
+      MODES[0];
+
+    setUrl(url);
+    setResult(
+      mediaFormat === "application/json"
+        ? JSON.stringify(JSON.parse(responseText), null, 2)
+        : responseText,
+    );
+    setSelectedMode(mode);
+    setLanguage(mode.prism_format);
     highlightAll();
   };
 
   return (
     <div className="bulma-box">
       <form
+        className="bulma-block"
         onSubmit={handleSubmit(onSubmitExtended)}
         onReset={() => {
           setResult("");
@@ -95,10 +114,17 @@ export default function SearchForm({
           </div>
         </div>
       </form>
-      {result && language && (
-        <pre className={`language-${language} line-numbers`}>
-          <code className={`language-${language}`}>{result}</code>
-        </pre>
+      {result && language && url && (
+        <>
+          <div className="bulma-content">
+            <h3 className={"bulma-title bulma-is-6"}>Results</h3>
+            <p>Request sent to:</p>
+            <pre>{url}</pre>
+          </div>
+          <pre className={`language-${language} line-numbers`}>
+            <code className={`language-${language}`}>{result}</code>
+          </pre>
+        </>
       )}
     </div>
   );
