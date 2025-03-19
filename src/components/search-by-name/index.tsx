@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import SearchForm, { Mode, MODES } from "../search-form";
 
+// @ts-ignore
 const SEARCH_API = import.meta.env.VITE_NAME_API_URL || "/name/";
 
 interface FormData {
@@ -18,7 +19,7 @@ export default function SearchByName() {
 
   const onSubmit = async ({ name, media_format }: FormData) => {
     if (!name) return;
-    const response = await fetch(SEARCH_API + name, {
+    const response = await fetch(SEARCH_API + encodeURI(name), {
       headers: { Accept: media_format },
     });
     const responseText = await response.text();
