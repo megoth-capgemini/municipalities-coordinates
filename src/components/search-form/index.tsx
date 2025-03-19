@@ -135,7 +135,7 @@ export default function SearchForm({
               <br />
               Header: <code>{requestedMode.media_format}</code>
               <br />
-              <a href="https://curl.se/docs/manpage.html">curl</a>:{" "}
+              Using curl:{" "}
               <code>
                 curl --header "Accept: {requestedMode.media_format}" {url}
               </code>
