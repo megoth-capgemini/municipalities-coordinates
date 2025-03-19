@@ -34,7 +34,7 @@ export default function SearchByName() {
   return (
     <SearchForm form={form} onSubmit={onSubmit}>
       <div className="bulma-field">
-        <label className="bulma-label">Name</label>
+        <label className="bulma-label">Name2</label>
         <div className="bulma-control">
           <input
             className={clsx("bulma-input", {
