@@ -58,8 +58,5 @@ app.add_middleware(
 
 app.mount("/", StaticFiles(directory="./dist"), name="public")
 
-import subprocess
-
 if __name__ == "__main__":
-    subprocess.run(["npm", "run", "build-web"])
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
