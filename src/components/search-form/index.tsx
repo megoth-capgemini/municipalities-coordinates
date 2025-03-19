@@ -123,7 +123,7 @@ export default function SearchForm({
       </form>
       {error && (
         <div className="bulma-notification bulma-is-danger">
-          <pre>{error.toString()}</pre>
+          <pre>{error.message}</pre>
         </div>
       )}
       {result && language && url && requestedMode && (
