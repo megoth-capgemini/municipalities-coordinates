@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",
+    "build-web": "tsc && vite build",
     "build-ldo": "ldo build --input ./shapes --output ./.ldo",
     "generate-file": "tsx generate-file.ts",
     "type-check": "tsc --noEmit",

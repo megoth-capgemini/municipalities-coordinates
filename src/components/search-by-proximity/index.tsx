@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import SearchForm, { Mode, MODES } from "../search-form";
 
-const SEARCH_API = "http://localhost:8000/coords/";
+const SEARCH_API = "/coords/";
 
 interface FormData {
   lat: number;

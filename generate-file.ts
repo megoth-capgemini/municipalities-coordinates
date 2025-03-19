@@ -20,7 +20,7 @@ async function parse() {
   return parseRdf(fs.readFileSync(documentToParse, "utf8"));
 }
 
-const filterPlaceOfType = (type: string) => (place) =>
+const filterPlaceOfType = (type: string) => (place: any) =>
   place.navneobjekttype === type;
 
 async function getCoordinates(
