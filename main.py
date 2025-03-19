@@ -1,3 +1,5 @@
+from unicodedata import normalize
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,7 +46,8 @@ def search_municipality_by_coords(request: Request, lat: float, long: float):
 
 @app.get("/name/{query}")
 def search_municipality_by_name(request: Request, query: str):
-    results = search_municipality_name(index, query_string=query)
+    decoded_query = normalize("NFC", query)
+    results = search_municipality_name(index, query_string=decoded_query)
     return search_response(request, results)
 
 
