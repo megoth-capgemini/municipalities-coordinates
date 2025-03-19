@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "framework": "vite",
-  "buildCommand": "npm run build-web",
-  "devCommand": "npm run dev",
   "builds": [
     {
       "src": "main.py",
