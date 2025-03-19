@@ -13,10 +13,6 @@ FORMAT_TURTLE = "text/turtle"
 
 app = FastAPI()
 index = open_index()
-
-import subprocess
-
-subprocess.run(["npm", "run", "build-web"])
 frontpage = open("./dist/index.html", "r").read()
 
 
@@ -62,5 +58,8 @@ app.add_middleware(
 
 app.mount("/", StaticFiles(directory="./dist"), name="public")
 
+import subprocess
+
 if __name__ == "__main__":
+    subprocess.run(["npm", "run", "build-web"])
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
