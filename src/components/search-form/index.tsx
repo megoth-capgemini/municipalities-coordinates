@@ -39,9 +39,13 @@ export default function SearchForm({
   const [url, setUrl] = useState<string>("");
   const [result, setResult] = useState<string>("");
   const [selectedMode, setSelectedMode] = useState<Mode>(MODES[0]);
+  const [requestedMode, setRequestedMode] = useState<Mode | null>(null);
   const [language, setLanguage] = useState<string>(MODES[0].prism_format);
 
-  useEffect(() => setValue("media_format", selectedMode.media_format), []);
+  useEffect(
+    () => setValue("media_format", selectedMode.media_format),
+    [selectedMode],
+  );
   useEffect(() => highlightAll(), [result]);
 
   const onSubmitExtended: SubmitHandler<FormData> = async (data) => {
@@ -61,9 +65,8 @@ export default function SearchForm({
         ? JSON.stringify(JSON.parse(responseText), null, 2)
         : responseText,
     );
-    setSelectedMode(mode);
+    setRequestedMode(mode);
     setLanguage(mode.prism_format);
-    highlightAll();
   };
 
   return (
@@ -73,6 +76,7 @@ export default function SearchForm({
         onSubmit={handleSubmit(onSubmitExtended)}
         onReset={() => {
           setResult("");
+          setRequestedMode(null);
           setSelectedMode(MODES[0]);
           setLanguage(MODES[0].prism_format);
           clearErrors();
@@ -114,12 +118,20 @@ export default function SearchForm({
           </div>
         </div>
       </form>
-      {result && language && url && (
+      {result && language && url && requestedMode && (
         <>
           <div className="bulma-content">
             <h3 className={"bulma-title bulma-is-6"}>Results</h3>
-            <p>Request sent to:</p>
-            <pre>{url}</pre>
+            <p>
+              Request sent to: <code>{url}</code>
+              <br />
+              Header: <code>{requestedMode.media_format}</code>
+              <br />
+              <a href="https://curl.se/docs/manpage.html">curl</a>:{" "}
+              <code>
+                curl --header "Accept: {requestedMode.media_format}" {url}
+              </code>
+            </p>
           </div>
           <pre className={`language-${language} line-numbers`}>
             <code className={`language-${language}`}>{result}</code>
