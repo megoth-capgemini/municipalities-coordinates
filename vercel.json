@@ -1,7 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "npm run build-web",
   "builds": [
+    {
+      "src": "npm run build-web",
+      "use": "@vercel/node"
+    },
     {
       "src": "main.py",
       "use": "@vercel/python"
