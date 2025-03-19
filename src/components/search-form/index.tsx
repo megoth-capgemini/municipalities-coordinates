@@ -41,6 +41,7 @@ export default function SearchForm({
   const [selectedMode, setSelectedMode] = useState<Mode>(MODES[0]);
   const [requestedMode, setRequestedMode] = useState<Mode | null>(null);
   const [language, setLanguage] = useState<string>(MODES[0].prism_format);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(
     () => setValue("media_format", selectedMode.media_format),
@@ -52,7 +53,8 @@ export default function SearchForm({
     const url = getUrl(data);
     const response = await fetch(url, {
       headers: { Accept: data.media_format },
-    });
+    }).catch(setError);
+    if (!response) return;
     const mediaFormat = response.headers.get("content-type");
     const responseText = await response.text();
     const mode =
@@ -79,6 +81,7 @@ export default function SearchForm({
           setRequestedMode(null);
           setSelectedMode(MODES[0]);
           setLanguage(MODES[0].prism_format);
+          setError(null);
           clearErrors();
         }}
       >
@@ -118,6 +121,11 @@ export default function SearchForm({
           </div>
         </div>
       </form>
+      {error && (
+        <div className="bulma-notification bulma-is-danger">
+          <pre>{error.toString()}</pre>
+        </div>
+      )}
       {result && language && url && requestedMode && (
         <>
           <div className="bulma-content">
