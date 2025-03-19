@@ -9,6 +9,7 @@
     "type-check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "pre-commit": ["build-web"],
   "license": "MIT",
   "description": "A simple setup for getting a list of Norwegian municipalities and their coordinates",
   "devDependencies": {

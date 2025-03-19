@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import SearchForm, { Mode, MODES } from "../search-form";
 
-const SEARCH_API = "/coords/";
+const SEARCH_API = import.meta.env.VITE_PROXIMITY_API_URL || "/coords/";
 
 interface FormData {
   lat: number;

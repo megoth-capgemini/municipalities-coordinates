@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import SearchForm, { Mode, MODES } from "../search-form";
 
-const SEARCH_API = "/name/";
+const SEARCH_API = import.meta.env.VITE_NAME_API_URL || "/name/";
 
 interface FormData {
   name: string;
