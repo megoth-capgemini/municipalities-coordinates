@@ -27,6 +27,11 @@ WHERE {
 }
 """)
 
+
+def get_municipalities():
+    return municipalities
+
+
 from whoosh.index import create_in, open_dir, FileIndex
 from whoosh.fields import Schema, TEXT, NUMERIC
 
@@ -36,20 +41,6 @@ schema = Schema(url=TEXT(stored=True),
                 lat=NUMERIC(stored=True),
                 long=NUMERIC(stored=True))
 
-
-def build():
-    index = create_in(INDEX_DIR, schema, indexname=INDEX_NAME)
-    writer = index.writer()
-    for municipality in municipalities:
-        writer.add_document(url=str(municipality.url),
-                            name=str(municipality.name),
-                            id=int(municipality.id),
-                            lat=float(municipality.lat),
-                            long=float(municipality.long))
-    writer.commit()
-    return index
-
-
 from whoosh.qparser import QueryParser
 from whoosh.query import FuzzyTerm
 
@@ -57,6 +48,14 @@ from whoosh.query import FuzzyTerm
 class MyFuzzyTerm(FuzzyTerm):
     def __init__(self, fieldname, text, boost=1.0, maxdist=1, prefixlength=1, constantscore=True):
         super(MyFuzzyTerm, self).__init__(fieldname, text, boost, maxdist, prefixlength, constantscore)
+
+
+def create_index():
+    return create_in(INDEX_DIR, schema, indexname=INDEX_NAME)
+
+
+def open_index():
+    return open_dir(INDEX_DIR, schema=schema, indexname=INDEX_NAME)
 
 
 def get_linked_response(request: Request, results: Results):
@@ -83,9 +82,6 @@ def get_linked_response(request: Request, results: Results):
 
 
 from geopy import distance
-
-def open_index():
-    return open_dir(INDEX_DIR, schema=schema, indexname=INDEX_NAME)
 
 
 def search_municipality_coords(lat: float, long: float):
@@ -114,14 +110,13 @@ def search_municipality_name(index: FileIndex, query_string):
 
 
 if __name__ == "__main__":
-    ix = build()
-    with ix.searcher() as searcher:
+    with open_index().searcher() as searcher:
         while True:
             query_input = input("Search for municipality: ")
             if query_input == "":
                 break
             print(f"Searching for {query_input}")
-            results = search_municipality_name(ix, query_input)
+            results = search_municipality_name(open_index(), query_input)
             for result in results:
                 print(result)
             print("---")
