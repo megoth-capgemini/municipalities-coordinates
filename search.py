@@ -1,10 +1,17 @@
-from rdflib import Graph, SKOS, DC, Namespace
+from rdflib import Graph, SKOS, DC, Namespace, URIRef, RDF, Literal
+from whoosh.searching import Results
+from whoosh.index import create_in, open_dir, FileIndex
+from whoosh.fields import Schema, TEXT, NUMERIC
+from whoosh.qparser import QueryParser
+from whoosh.query import FuzzyTerm
+from geopy import distance
 
 INDEX_DIR = ".whoosh"
 INDEX_NAME = "municipalities"
 
 SCHEMA = Namespace("https://schema.org/")
 AMV = Namespace("https://w3id.org/amv#")
+MUNICIPALITY_URL = Namespace("https://register.geonorge.no/sosi-kodelister/inndelinger/inndelingsbase/kommunenummer/")
 
 g = Graph()
 g.parse('kommunenummer-koordinater.ttl')
@@ -24,6 +31,17 @@ WHERE {
 }
 """)
 
+schema = Schema(url=TEXT(stored=True),
+                name=TEXT(stored=True),
+                id=NUMERIC(stored=True),
+                lat=NUMERIC(stored=True),
+                long=NUMERIC(stored=True))
+
+
+class MyFuzzyTerm(FuzzyTerm):
+    def __init__(self, fieldname, text, boost=1.0, maxdist=1, prefixlength=1, constantscore=True):
+        super(MyFuzzyTerm, self).__init__(fieldname, text, boost, maxdist, prefixlength, constantscore)
+
 
 def get_graph():
     return g
@@ -31,24 +49,6 @@ def get_graph():
 
 def get_municipalities():
     return municipalities
-
-
-from whoosh.index import create_in, open_dir, FileIndex
-from whoosh.fields import Schema, TEXT, NUMERIC
-
-schema = Schema(url=TEXT(stored=True),
-                name=TEXT(stored=True),
-                id=NUMERIC(stored=True),
-                lat=NUMERIC(stored=True),
-                long=NUMERIC(stored=True))
-
-from whoosh.qparser import QueryParser
-from whoosh.query import FuzzyTerm
-
-
-class MyFuzzyTerm(FuzzyTerm):
-    def __init__(self, fieldname, text, boost=1.0, maxdist=1, prefixlength=1, constantscore=True):
-        super(MyFuzzyTerm, self).__init__(fieldname, text, boost, maxdist, prefixlength, constantscore)
 
 
 def create_index():
@@ -59,18 +59,34 @@ def open_index():
     return open_dir(INDEX_DIR, schema=schema, indexname=INDEX_NAME)
 
 
-def serialize(graph: Graph, format: str):
-    return graph.serialize(format=format,
+def get_linked_response(results: Results, base_url: str):
+    graph = Graph()
+    base = URIRef(base_url)
+    graph.add((base, RDF.type, RDF.Seq))
+
+    for i, result in enumerate(results):
+        municipality = URIRef(result.get("url"))
+        graph.add((base, URIRef(f"{str(RDF)}_{i}"), municipality))
+        graph.add((municipality, RDF.type, SKOS.Concept))
+        graph.add((municipality, DC.identifier, (Literal(result["id"]))))
+        graph.add((municipality, SKOS.prefLabel, (Literal(result["name"]))))
+        graph.add((municipality, SCHEMA.latitude, (Literal(result["lat"]))))
+        graph.add((municipality, SCHEMA.longitude, (Literal(result["long"]))))
+        graph.add((municipality, AMV.accuracy, (Literal(result["score"]))))
+
+    return graph
+
+
+def serialize(graph: Graph, media_format: str):
+    return graph.serialize(format=media_format,
                            context={
                                "amv": str(AMV),
                                "dc": str(DC),
-                               "kommunenummer": "https://register.geonorge.no/sosi-kodelister/inndelinger/inndelingsbase/kommunenummer/",
+                               "kommunenummer": str(MUNICIPALITY_URL),
+                               "rdf": str(RDF),
                                "schema": str(SCHEMA),
                                "skos": str(SKOS),
                            })
-
-
-from geopy import distance
 
 
 def search_municipality_coords(lat: float, long: float):
