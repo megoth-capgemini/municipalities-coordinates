@@ -8,7 +8,7 @@ export default function FrontPage() {
       <header className="bulma-content">
         <h1 className="bulma-title">Norwegian Municipalities</h1>
         <p>
-          This is a service for finding norwegian municipalities by their name
+          This is a service for finding Norwegian municipalities by their name
           or coordinates. The data can expressed as a{" "}
           <a href="https://en.wikipedia.org/wiki/Linked_data">Linked Data</a>{" "}
           graph, or a simple{" "}

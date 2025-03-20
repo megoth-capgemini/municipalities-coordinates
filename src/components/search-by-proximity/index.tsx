@@ -63,7 +63,7 @@ export default function SearchByProximity() {
                 />
               </div>
             </div>
-            <div className="bulma-field">
+            <div className="bulma-field" style={{ flexGrow: 0 }}>
               <button
                 className="bulma-button bulma-is-light"
                 type="button"
