@@ -1,6 +1,6 @@
 from geopy import distance
 from rdflib import Graph, Namespace, URIRef, Literal
-from rdflib.namespace import SKOS, DC, RDF, XSD
+from rdflib.namespace import SKOS, DC, RDF
 from whoosh.fields import Schema, TEXT, NUMERIC
 from whoosh.index import create_in, open_dir, FileIndex
 from whoosh.qparser import QueryParser
@@ -10,9 +10,10 @@ from whoosh.searching import Results
 INDEX_DIR = ".whoosh"
 INDEX_NAME = "municipalities"
 
-SCHEMA = Namespace("https://schema.org/")
 AMV = Namespace("https://w3id.org/amv#")
+M8G = Namespace("http://data.europa.eu/m8g/")
 MUNICIPALITY_URL = Namespace("https://register.geonorge.no/sosi-kodelister/inndelinger/inndelingsbase/kommunenummer/")
+SCHEMA = Namespace("https://schema.org/")
 
 g = Graph()
 g.parse('kommunenummer-koordinater.ttl')
@@ -68,12 +69,12 @@ def get_linked_response(results: Results, base_url: str):
     for i, result in enumerate(results):
         municipality = URIRef(result.get("url"))
         graph.add((base, URIRef(f"{str(RDF)}_{i}"), municipality))
-        graph.add((municipality, RDF.type, SKOS.Concept))
-        graph.add((municipality, DC.identifier, (Literal(result["id"], datatype=XSD.string))))
-        graph.add((municipality, SKOS.prefLabel, (Literal(result["name"], datatype=XSD.string))))
-        graph.add((municipality, SCHEMA.latitude, (Literal(result["lat"], datatype=XSD.float))))
-        graph.add((municipality, SCHEMA.longitude, (Literal(result["long"], datatype=XSD.float))))
-        graph.add((municipality, AMV.accuracy, (Literal(result["score"], datatype=XSD.float))))
+        graph.add((municipality, RDF.type, M8G.PublicOrganisation))
+        graph.add((municipality, DC.identifier, (Literal(result["id"]))))
+        graph.add((municipality, SKOS.prefLabel, (Literal(result["name"]))))
+        graph.add((municipality, SCHEMA.latitude, (Literal(result["lat"]))))
+        graph.add((municipality, SCHEMA.longitude, (Literal(result["long"]))))
+        graph.add((municipality, AMV.accuracy, (Literal(result["score"]))))
 
     return graph
 
@@ -84,6 +85,7 @@ def serialize(graph: Graph, media_format: str):
                                "amv": str(AMV),
                                "dc": str(DC),
                                "kommunenummer": str(MUNICIPALITY_URL),
+                               "m8g": str(M8G),
                                "rdf": str(RDF),
                                "schema": str(SCHEMA),
                                "skos": str(SKOS),
@@ -105,8 +107,6 @@ def search_municipality_coords(lat: float, long: float):
 def search_municipality_name(index: FileIndex, query_string):
     print(f"Searching for {query_string}")
     query = QueryParser("name", index.schema, termclass=MyFuzzyTerm).parse(query_string)
-    rows = index.searcher().search(query)
-    print(rows[0].get("id"))
     return [{
         "id": row.get("id"),
         "name": row.get("name"),
@@ -114,7 +114,7 @@ def search_municipality_name(index: FileIndex, query_string):
         "long": row.get("long"),
         "url": row.get("url"),
         "score": row.score,
-    } for row in rows]
+    } for row in index.searcher().search(query)]
 
 
 if __name__ == "__main__":
