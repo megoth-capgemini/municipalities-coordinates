@@ -10,7 +10,7 @@ def build():
     for municipality in get_municipalities():
         writer.add_document(url=str(municipality.url),
                             name=str(municipality.name),
-                            id=int(municipality.id),
+                            id=str(municipality.id),
                             lat=float(municipality.lat),
                             long=float(municipality.long))
     writer.commit()

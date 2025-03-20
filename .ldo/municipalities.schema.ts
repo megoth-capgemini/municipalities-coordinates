@@ -21,7 +21,7 @@ export const municipalitiesSchema: Schema = {
               predicate: "http://purl.org/dc/terms/identifier",
               valueExpr: {
                 type: "NodeConstraint",
-                datatype: "http://www.w3.org/2001/XMLSchema#integer",
+                datatype: "http://www.w3.org/2001/XMLSchema#string",
               },
             },
             {

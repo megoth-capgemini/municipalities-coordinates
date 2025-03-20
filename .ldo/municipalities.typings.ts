@@ -12,7 +12,7 @@ import { ContextDefinition } from "jsonld";
 export interface Municipality {
   "@id"?: string;
   "@context"?: ContextDefinition;
-  identifier: number;
+  identifier: string;
   prefLabel: string;
   status: string;
   latitude: string;

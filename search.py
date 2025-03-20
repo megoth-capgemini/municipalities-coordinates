@@ -1,10 +1,11 @@
-from rdflib import Graph, SKOS, DC, Namespace, URIRef, RDF, Literal
-from whoosh.searching import Results
-from whoosh.index import create_in, open_dir, FileIndex
+from geopy import distance
+from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib.namespace import SKOS, DC, RDF, XSD
 from whoosh.fields import Schema, TEXT, NUMERIC
+from whoosh.index import create_in, open_dir, FileIndex
 from whoosh.qparser import QueryParser
 from whoosh.query import FuzzyTerm
-from geopy import distance
+from whoosh.searching import Results
 
 INDEX_DIR = ".whoosh"
 INDEX_NAME = "municipalities"
@@ -33,7 +34,7 @@ WHERE {
 
 schema = Schema(url=TEXT(stored=True),
                 name=TEXT(stored=True),
-                id=NUMERIC(stored=True),
+                id=TEXT(stored=True),
                 lat=NUMERIC(stored=True),
                 long=NUMERIC(stored=True))
 
@@ -68,11 +69,11 @@ def get_linked_response(results: Results, base_url: str):
         municipality = URIRef(result.get("url"))
         graph.add((base, URIRef(f"{str(RDF)}_{i}"), municipality))
         graph.add((municipality, RDF.type, SKOS.Concept))
-        graph.add((municipality, DC.identifier, (Literal(result["id"]))))
-        graph.add((municipality, SKOS.prefLabel, (Literal(result["name"]))))
-        graph.add((municipality, SCHEMA.latitude, (Literal(result["lat"]))))
-        graph.add((municipality, SCHEMA.longitude, (Literal(result["long"]))))
-        graph.add((municipality, AMV.accuracy, (Literal(result["score"]))))
+        graph.add((municipality, DC.identifier, (Literal(result["id"], datatype=XSD.string))))
+        graph.add((municipality, SKOS.prefLabel, (Literal(result["name"], datatype=XSD.string))))
+        graph.add((municipality, SCHEMA.latitude, (Literal(result["lat"], datatype=XSD.float))))
+        graph.add((municipality, SCHEMA.longitude, (Literal(result["long"], datatype=XSD.float))))
+        graph.add((municipality, AMV.accuracy, (Literal(result["score"], datatype=XSD.float))))
 
     return graph
 
@@ -104,6 +105,8 @@ def search_municipality_coords(lat: float, long: float):
 def search_municipality_name(index: FileIndex, query_string):
     print(f"Searching for {query_string}")
     query = QueryParser("name", index.schema, termclass=MyFuzzyTerm).parse(query_string)
+    rows = index.searcher().search(query)
+    print(rows[0].get("id"))
     return [{
         "id": row.get("id"),
         "name": row.get("name"),
@@ -111,7 +114,7 @@ def search_municipality_name(index: FileIndex, query_string):
         "long": row.get("long"),
         "url": row.get("url"),
         "score": row.score,
-    } for row in index.searcher().search(query)]
+    } for row in rows]
 
 
 if __name__ == "__main__":

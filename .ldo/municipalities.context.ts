@@ -8,7 +8,7 @@ import { LdoJsonldContext } from "@ldo/jsonld-dataset-proxy";
 export const municipalitiesContext: LdoJsonldContext = {
   identifier: {
     "@id": "http://purl.org/dc/terms/identifier",
-    "@type": "http://www.w3.org/2001/XMLSchema#integer",
+    "@type": "http://www.w3.org/2001/XMLSchema#string",
   },
   prefLabel: {
     "@id": "http://www.w3.org/2004/02/skos/core#prefLabel",
