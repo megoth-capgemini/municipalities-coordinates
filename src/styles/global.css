@@ -7,3 +7,26 @@
         margin: 0.5rem auto;
     }
 }
+
+.bulma-content h1:not(:last-child),
+.bulma-content h2:not(:last-child),
+.bulma-content h3:not(:last-child),
+.bulma-content h4:not(:last-child),
+.bulma-content h5:not(:last-child),
+.bulma-content h6:not(:last-child) {
+    margin-bottom: calc(var(--bulma-block-spacing) / 2);
+}
+
+.supported-modes > *:not(:last-child):after {
+    content: ", ";
+}
+
+dl {
+    display: grid;
+    gap: 0 1ch;
+    grid-template-columns: auto 1fr;
+}
+
+dt {
+    font-weight: bold;
+}

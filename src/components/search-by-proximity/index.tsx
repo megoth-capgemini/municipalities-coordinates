@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import SearchForm, { FormData } from "../search-form";
 
-// @ts-ignore
-const SEARCH_API = import.meta.env.VITE_PROXIMITY_API_URL || "/coords/";
+export const PROX_SEARCH_API =
+  // @ts-ignore
+  import.meta.env.VITE_PROXIMITY_API_URL || "/coords/";
 
 interface ProximityFormData extends FormData {
   lat: number;
@@ -21,7 +22,7 @@ export default function SearchByProximity() {
   } = form;
 
   const getUrl = ({ lat, long }: ProximityFormData) =>
-    `${SEARCH_API}${lat}/${long}`;
+    `${PROX_SEARCH_API}${lat}/${long}`;
 
   const getCoordinates = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();

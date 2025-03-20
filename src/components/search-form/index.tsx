@@ -19,7 +19,7 @@ interface Props {
   getUrl: (data: any) => string;
 }
 
-export const MODES: Array<Mode> = [
+export const SUPPORTED_MODES: Array<Mode> = [
   { name: "JSON", media_format: "application/json", prism_format: "json" },
   {
     name: "JSON-LD",
@@ -38,9 +38,11 @@ export default function SearchForm({
   const highlightAll = usePrism();
   const [url, setUrl] = useState<string>("");
   const [result, setResult] = useState<string>("");
-  const [selectedMode, setSelectedMode] = useState<Mode>(MODES[0]);
+  const [selectedMode, setSelectedMode] = useState<Mode>(SUPPORTED_MODES[0]);
   const [requestedMode, setRequestedMode] = useState<Mode | null>(null);
-  const [language, setLanguage] = useState<string>(MODES[0].prism_format);
+  const [language, setLanguage] = useState<string>(
+    SUPPORTED_MODES[0].prism_format,
+  );
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(
@@ -58,8 +60,9 @@ export default function SearchForm({
     const mediaFormat = response.headers.get("content-type");
     const responseText = await response.text();
     const mode =
-      MODES.find((mode) => mediaFormat?.indexOf(mode.media_format) !== -1) ||
-      MODES[0];
+      SUPPORTED_MODES.find(
+        (mode) => mediaFormat?.indexOf(mode.media_format) !== -1,
+      ) || SUPPORTED_MODES[0];
 
     setUrl(url);
     setResult(
@@ -79,8 +82,8 @@ export default function SearchForm({
         onReset={() => {
           setResult("");
           setRequestedMode(null);
-          setSelectedMode(MODES[0]);
-          setLanguage(MODES[0].prism_format);
+          setSelectedMode(SUPPORTED_MODES[0]);
+          setLanguage(SUPPORTED_MODES[0].prism_format);
           setError(null);
           clearErrors();
         }}
@@ -89,7 +92,7 @@ export default function SearchForm({
         <div className="bulma-field">
           <label className="bulma-label">Response format</label>
           <div className="bulma-field bulma-has-addons">
-            {MODES.map((mode) => (
+            {SUPPORTED_MODES.map((mode) => (
               <div className="bulma-control" key={mode.media_format}>
                 <button
                   className={clsx("bulma-button", {
@@ -131,7 +134,7 @@ export default function SearchForm({
           <div className="bulma-content">
             <h3 className={"bulma-title bulma-is-6"}>Results</h3>
             <p>
-              Request sent to: <code>{url}</code>
+              Request: <code>{url}</code>
               <br />
               Header: <code>{requestedMode.media_format}</code>
               <br />

@@ -3,7 +3,7 @@ import clsx from "clsx";
 import SearchForm from "../search-form";
 
 // @ts-ignore
-const SEARCH_API = import.meta.env.VITE_NAME_API_URL || "/name/";
+export const NAME_SEARCH_API = import.meta.env.VITE_NAME_API_URL || "/name/";
 
 interface FormData {
   name: string;
@@ -17,7 +17,7 @@ export default function SearchByName() {
     formState: { errors },
   } = form;
 
-  const getUrl = ({ name }: FormData): string => SEARCH_API + name;
+  const getUrl = ({ name }: FormData): string => NAME_SEARCH_API + name;
 
   return (
     <SearchForm form={form} getUrl={getUrl}>
