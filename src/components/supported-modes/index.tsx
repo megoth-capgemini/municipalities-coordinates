@@ -4,7 +4,7 @@ export default function SupportedModes() {
   return (
     <span className="supported-modes">
       {SUPPORTED_MODES.map(({ name, media_format }) => (
-        <span>
+        <span key={media_format}>
           {name} (<code>{media_format}</code>)
         </span>
       ))}

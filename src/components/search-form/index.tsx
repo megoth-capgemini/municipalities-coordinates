@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import usePrism from "../../hooks/use-prism";
 import { SubmitHandler, type UseFormReturn } from "react-hook-form";
 import clsx from "clsx";
+import Loading from "../loading";
 
 export type Mode = {
   name: string;
@@ -14,42 +15,63 @@ export interface FormData {
 }
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
   form: UseFormReturn<any>;
   getUrl: (data: any) => string;
+  modes?: Array<Mode>;
 }
 
+export const JSON_MODE = {
+  name: "JSON",
+  media_format: "application/json",
+  prism_format: "json",
+};
+export const JSONLD_MODE = {
+  name: "JSON-LD",
+  media_format: "application/ld+json",
+  prism_format: "json",
+};
+export const TURTLE_MODE = {
+  name: "Turtle",
+  media_format: "text/turtle",
+  prism_format: "turtle",
+};
+export const RDFXML_MODE = {
+  name: "RDF/XML",
+  media_format: "application/rdf+xml",
+  prism_format: "xml",
+};
 export const SUPPORTED_MODES: Array<Mode> = [
-  { name: "JSON", media_format: "application/json", prism_format: "json" },
-  {
-    name: "JSON-LD",
-    media_format: "application/ld+json",
-    prism_format: "json",
-  },
-  { name: "Turtle", media_format: "text/turtle", prism_format: "turtle" },
-  { name: "RDF/XML", media_format: "application/rdf+xml", prism_format: "xml" },
+  JSON_MODE,
+  JSONLD_MODE,
+  TURTLE_MODE,
+  RDFXML_MODE,
 ];
 
 export default function SearchForm({
   children,
-  form: { clearErrors, handleSubmit, setValue },
+  form: {
+    clearErrors,
+    handleSubmit,
+    setValue,
+    formState: { isLoading, isSubmitting },
+  },
   getUrl,
+  modes = SUPPORTED_MODES,
 }: Props) {
   const highlightAll = usePrism();
   const [url, setUrl] = useState<string>("");
   const [result, setResult] = useState<string>("");
-  const [selectedMode, setSelectedMode] = useState<Mode>(SUPPORTED_MODES[0]);
+  const [selectedMode, setSelectedMode] = useState<Mode>(modes[0]);
   const [requestedMode, setRequestedMode] = useState<Mode | null>(null);
-  const [language, setLanguage] = useState<string>(
-    SUPPORTED_MODES[0].prism_format,
-  );
+  const [language, setLanguage] = useState<string>(modes[0].prism_format);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(
     () => setValue("media_format", selectedMode.media_format),
     [selectedMode],
   );
-  useEffect(() => highlightAll(), [result]);
+  useEffect(highlightAll, [result]);
 
   const onSubmitExtended: SubmitHandler<FormData> = async (data) => {
     const url = getUrl(data);
@@ -60,9 +82,8 @@ export default function SearchForm({
     const mediaFormat = response.headers.get("content-type");
     const responseText = await response.text();
     const mode =
-      SUPPORTED_MODES.find(
-        (mode) => mediaFormat?.indexOf(mode.media_format) !== -1,
-      ) || SUPPORTED_MODES[0];
+      modes.find((mode) => mediaFormat?.indexOf(mode.media_format) !== -1) ||
+      modes[0];
 
     setUrl(url);
     setResult(
@@ -82,8 +103,8 @@ export default function SearchForm({
         onReset={() => {
           setResult("");
           setRequestedMode(null);
-          setSelectedMode(SUPPORTED_MODES[0]);
-          setLanguage(SUPPORTED_MODES[0].prism_format);
+          setSelectedMode(modes[0]);
+          setLanguage(modes[0].prism_format);
           setError(null);
           clearErrors();
         }}
@@ -92,7 +113,7 @@ export default function SearchForm({
         <div className="bulma-field">
           <label className="bulma-label">Response format</label>
           <div className="bulma-field bulma-has-addons">
-            {SUPPORTED_MODES.map((mode) => (
+            {modes.map((mode) => (
               <div className="bulma-control" key={mode.media_format}>
                 <button
                   className={clsx("bulma-button", {
@@ -124,14 +145,18 @@ export default function SearchForm({
           </div>
         </div>
       </form>
-      {error && (
+      {(isLoading || isSubmitting) && <Loading />}
+      {error && !isSubmitting && (
         <div className="bulma-notification bulma-is-danger">
           <pre>{error.message}</pre>
         </div>
       )}
-      {result && language && url && requestedMode && (
+      {result && language && url && requestedMode && !isLoading && (
         <>
-          <div className="bulma-content">
+          <div
+            className="bulma-content"
+            style={{ opacity: isLoading || isSubmitting ? 0.5 : 1 }}
+          >
             <h3 className={"bulma-title bulma-is-6"}>Results</h3>
             <p>
               Request: <code>{url}</code>
@@ -144,7 +169,7 @@ export default function SearchForm({
               </code>
             </p>
           </div>
-          <pre className={`language-${language} line-numbers`}>
+          <pre className={`code language-${language} line-numbers`}>
             <code className={`language-${language}`}>{result}</code>
           </pre>
         </>

@@ -46,10 +46,11 @@ def read_frontpage():
     return HTMLResponse(content=webapp)
 
 
-@app.get("/graph")
-def read_graph(request: Request):
-    requested_format, is_ld_request = parse_format(request.headers.get("Accept"))
-    return PlainTextResponse(serialize(graph=get_graph(), media_format=requested_format), media_type=requested_format)
+# This API is to heavy and prime for abuse
+# @app.get("/graph")
+# def read_graph(request: Request):
+#     requested_format, is_ld_request = parse_format(request.headers.get("Accept"))
+#     return PlainTextResponse(serialize(graph=get_graph(), media_format=requested_format), media_type=requested_format)
 
 
 @app.get("/coords/{lat}/{long}")

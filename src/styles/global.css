@@ -17,6 +17,11 @@
     margin-bottom: calc(var(--bulma-block-spacing) / 2);
 }
 
+.code.code {
+    font-size: var(--bulma-small-font-size);
+    max-height: max(600px, 50vh);
+}
+
 .supported-modes > *:not(:last-child):after {
     content: ", ";
 }

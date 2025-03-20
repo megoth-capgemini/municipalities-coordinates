@@ -4,7 +4,7 @@ import SearchForm from "../search-form";
 import type { MouseEvent } from "react";
 
 // @ts-ignore
-export const NAME_SEARCH_API = import.meta.env.VITE_NAME_API_URL || "/name/";
+export const NAME_SEARCH_API = import.meta.env.VITE_NAME_API_URL || "/name";
 const MUNICIPALITY_NAMES = [
   "Arendal",
   "Bergen",
@@ -33,7 +33,7 @@ export default function SearchByName() {
     setValue,
   } = form;
 
-  const getUrl = ({ name }: FormData): string => NAME_SEARCH_API + name;
+  const getUrl = ({ name }: FormData): string => `${NAME_SEARCH_API}/${name}`;
 
   const getRandomName = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
