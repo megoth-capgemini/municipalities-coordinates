@@ -1,3 +1,7 @@
+.bulma-box {
+    overflow: auto;
+}
+
 .bulma-container:not(.bulma-is-max-tablet):not(.bulma-is-max-desktop):not(.bulma-is-max-widescreen) {
     margin: 0.5rem 1rem;
     max-width: 90ch;
@@ -15,6 +19,14 @@
 .bulma-content h5:not(:last-child),
 .bulma-content h6:not(:last-child) {
     margin-bottom: calc(var(--bulma-block-spacing) / 2);
+}
+
+code {
+    text-wrap: nowrap;
+    font-size: 0.8em;
+    @media screen and (min-width: 1024px) {
+        font-size: var(--bulma-code-size);
+    }
 }
 
 .code.code {
