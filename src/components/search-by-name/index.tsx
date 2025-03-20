@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import SearchForm from "../search-form";
 import type { MouseEvent } from "react";
+import SupportedModes from "../supported-modes";
 
 // @ts-ignore
 export const NAME_SEARCH_API = import.meta.env.VITE_NAME_API_URL || "/name";
@@ -43,6 +44,19 @@ export default function SearchByName() {
 
   return (
     <SearchForm form={form} getUrl={getUrl}>
+      <div className="bulma-content">
+        <h2 className="bulma-title bulma-is-4">Search by name</h2>
+        <dl>
+          <dt>URL</dt>
+          <dd>
+            <code>{NAME_SEARCH_API}/[query]</code>
+          </dd>
+          <dt>Formats</dt>
+          <dd>
+            <SupportedModes />
+          </dd>
+        </dl>
+      </div>
       <div className="bulma-field">
         <label className="bulma-label">Name</label>
         <div className="bulma-field bulma-is-horizontal">

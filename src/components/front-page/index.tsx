@@ -1,6 +1,5 @@
-import SearchByName, { NAME_SEARCH_API } from "../search-by-name";
-import SearchByProximity, { PROX_SEARCH_API } from "../search-by-proximity";
-import SupportedModes from "../supported-modes";
+import SearchByName from "../search-by-name";
+import SearchByProximity from "../search-by-proximity";
 
 export default function FrontPage() {
   return (
@@ -23,33 +22,7 @@ export default function FrontPage() {
           .
         </p>
       </header>
-      <section className="bulma-block bulma-content">
-        <h2 className="bulma-title bulma-is-4">Search by name</h2>
-        <dl>
-          <dt>URL</dt>
-          <dd>
-            <code>{NAME_SEARCH_API}/[query]</code>
-          </dd>
-          <dt>Formats</dt>
-          <dd>
-            <SupportedModes />
-          </dd>
-        </dl>
-      </section>
       <SearchByName />
-      <section className="bulma-block bulma-content">
-        <h2 className="bulma-title bulma-is-4">Search by coordinates</h2>
-        <dl>
-          <dt>URL</dt>
-          <dd>
-            <code>{PROX_SEARCH_API}/[lat]/[long]</code>
-          </dd>
-          <dt>Formats</dt>
-          <dd>
-            <SupportedModes />
-          </dd>
-        </dl>
-      </section>
       <SearchByProximity />
       <section id="documentation" className="bulma-block bulma-content">
         <h2 className="bulma-title bulma-is-4">Documentation</h2>
@@ -59,7 +32,7 @@ export default function FrontPage() {
           technical details of how the service is developed and operated, check
           out the <a href={""}>code repository on GitHub</a>.
         </p>
-        <h3 className="bulma-title bulma-is-5">The data</h3>
+        <h3 className="bulma-title bulma-is-5">Data</h3>
         <p>
           The data is a combination of{" "}
           <a href="https://data.norge.no/datasets/978a923c-9ab6-3617-8fd6-6622363454e3">
@@ -88,9 +61,19 @@ export default function FrontPage() {
           >
             code repository
           </a>
-          .
+          . Do note that the vocabularies used are slightly different from what
+          is exposed through the service, as explained in the next section.
         </p>
-        <h3 className="bulma-title bulma-is-5">The schema</h3>
+        <h3 className="bulma-title bulma-is-5">Schema</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
         <h3 className="bulma-title bulma-is-5">Coordinates systems</h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -103,7 +86,12 @@ export default function FrontPage() {
         </p>
       </section>
       <footer className="bulma-block bulma-content">
-        <nav></nav>
+        <a
+          href="https://www.flaticon.com/free-icons/norway"
+          title="norway icons"
+        >
+          Norway icons created by iconset.co - Flaticon
+        </a>
       </footer>
     </div>
   );

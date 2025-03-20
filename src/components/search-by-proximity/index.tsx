@@ -2,6 +2,7 @@ import { type MouseEvent } from "react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import SearchForm, { FormData } from "../search-form";
+import SupportedModes from "../supported-modes";
 
 export const PROX_SEARCH_API =
   // @ts-ignore
@@ -35,6 +36,19 @@ export default function SearchByProximity() {
 
   return (
     <SearchForm form={form} getUrl={getUrl}>
+      <div className="bulma-content">
+        <h2 className="bulma-title bulma-is-4">Search by coordinates</h2>
+        <dl>
+          <dt>URL</dt>
+          <dd>
+            <code>{PROX_SEARCH_API}/[lat]/[long]</code>
+          </dd>
+          <dt>Formats</dt>
+          <dd>
+            <SupportedModes />
+          </dd>
+        </dl>
+      </div>
       <div className="bulma-field">
         <label className="bulma-label">Coordinates</label>
         <div className="bulma-field bulma-is-horizontal">
