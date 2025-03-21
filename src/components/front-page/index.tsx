@@ -11,7 +11,7 @@ export default function FrontPage() {
       </header>
       <SearchByName />
       <SearchByProximity />
-      <section id="documentation" className="bulma-block bulma-content">
+      <section className="bulma-block bulma-content">
         <Documentation />
       </section>
       <footer className="bulma-block bulma-content">

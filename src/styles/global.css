@@ -40,8 +40,10 @@ code {
 
 dl {
     display: grid;
-    gap: 0 1ch;
+    gap: 0.5rem 1ch;
     grid-template-columns: min-content 1fr;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 dt {

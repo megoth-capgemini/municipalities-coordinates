@@ -1,6 +1,6 @@
 from geopy import distance
 from rdflib import Graph, Namespace, URIRef, Literal
-from rdflib.namespace import SKOS, DC, RDF
+from rdflib.namespace import DCTERMS, RDF
 from whoosh.fields import Schema, TEXT, NUMERIC
 from whoosh.index import create_in, open_dir, FileIndex
 from whoosh.qparser import QueryParser
@@ -11,7 +11,7 @@ INDEX_DIR = ".whoosh"
 INDEX_NAME = "municipalities"
 
 AMV = Namespace("https://w3id.org/amv#")
-M8G = Namespace("http://data.europa.eu/m8g/")
+CPOV = Namespace("http://data.europa.eu/m8g/")
 MUNICIPALITY_URL = Namespace("https://register.geonorge.no/sosi-kodelister/inndelinger/inndelingsbase/kommunenummer/")
 SCHEMA = Namespace("https://schema.org/")
 
@@ -79,9 +79,9 @@ def get_linked_response(results: Results, base_url: str):
             # ending list
             graph.add((base, RDF.rest, RDF.nil))
         # adding data on municipality
-        graph.add((municipality, RDF.type, M8G.PublicOrganisation))
-        graph.add((municipality, DC.identifier, (Literal(result["id"]))))
-        graph.add((municipality, SKOS.prefLabel, (Literal(result["name"]))))
+        graph.add((municipality, RDF.type, CPOV.PublicOrganisation))
+        graph.add((municipality, DCTERMS.identifier, (Literal(result["id"]))))
+        graph.add((municipality, DCTERMS.description, (Literal(result["name"]))))
         graph.add((municipality, SCHEMA.latitude, (Literal(result["lat"]))))
         graph.add((municipality, SCHEMA.longitude, (Literal(result["long"]))))
         graph.add((municipality, AMV.accuracy, (Literal(result["score"]))))
@@ -93,12 +93,11 @@ def serialize(graph: Graph, media_format: str):
     return graph.serialize(format=media_format,
                            context={
                                "amv": str(AMV),
-                               "dc": str(DC),
+                               "dc": str(DCTERMS),
                                "kommunenummer": str(MUNICIPALITY_URL),
-                               "m8g": str(M8G),
+                               "cpov": str(CPOV),
                                "rdf": str(RDF),
                                "schema": str(SCHEMA),
-                               "skos": str(SKOS),
                            })
 
 
@@ -110,8 +109,8 @@ def search_municipality_coords(lat: float, long: float):
         "lat": municipality["lat"],
         "long": municipality["long"],
         "url": municipality["url"],
-        "score": float(distance.distance((lat, long), (municipality["lat"], municipality["long"])).kilometers),
-    } for municipality in municipalities], key=lambda d: d["score"])[:5]
+        "score": float(distance.distance((lat, long), (municipality["lat"], municipality["long"])).kilometers) * -1,
+    } for municipality in municipalities], key=lambda d: d["score"] * -1)[:5]
 
 
 def search_municipality_name(index: FileIndex, query_string):

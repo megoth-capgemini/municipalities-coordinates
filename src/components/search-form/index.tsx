@@ -158,16 +158,22 @@ export default function SearchForm({
             style={{ opacity: isLoading || isSubmitting ? 0.5 : 1 }}
           >
             <h3 className={"bulma-title bulma-is-6"}>Results</h3>
-            <p>
-              Request: <code>{url}</code>
-              <br />
-              Header: <code>{requestedMode.media_format}</code>
-              <br />
-              Using curl:{" "}
-              <code>
-                curl --header "Accept: {requestedMode.media_format}" {url}
-              </code>
-            </p>
+            <dl>
+              <dt>Request</dt>
+              <dd>
+                <code>{url}</code>
+              </dd>
+              <dt>Header</dt>
+              <dd>
+                <code>{requestedMode.media_format}</code>
+              </dd>
+              <dt>curl</dt>
+              <dd>
+                <code>
+                  curl --header "Accept: {requestedMode.media_format}" {url}
+                </code>
+              </dd>
+            </dl>
           </div>
           <pre className={`code language-${language} line-numbers`}>
             <code className={`language-${language}`}>{result}</code>

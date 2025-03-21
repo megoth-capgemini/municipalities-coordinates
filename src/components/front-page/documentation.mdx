@@ -1,10 +1,10 @@
-<h2 className="bulma-title bulma-is-4">Documentation</h2>
+<h2 id="documentation" className="bulma-title bulma-is-4">Documentation</h2>
 
 This section covers the details of the service, and focuses on what you need to know to use the service. If you want to
 understand the technical details of how the service is developed and operated, check out the [code
 repository on GitHub](https://github.com/megoth-capgemini/municipalities-coordinates).
 
-<h3 className="bulma-title bulma-is-5">Data</h3>
+<h3 id="data" className="bulma-title bulma-is-5">Data</h3>
 
 The data is a combination
 of [the list of municipalities from data.norge.no](https://data.norge.no/datasets/978a923c-9ab6-3617-8fd6-6622363454e3)
@@ -20,59 +20,10 @@ next section.
 
 <h3 className="bulma-title bulma-is-5">Schema</h3>
 
-<dl>
-    <dt>amv</dt>
-    <dd>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
-    </dd>
-    <dt>dc</dt>
-    <dd>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
-    </dd>
-    <dt>kommune&shy;nummer</dt>
-    <dd>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
-    </dd>
-    <dt>m8g</dt>
-    <dd>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
-    </dd>
-    <dt>rdf</dt>
-    <dd>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
-    </dd>
-    <dt>schema</dt>
-    <dd>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
-    </dd>
-    <dt>skos</dt>
-    <dd>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
-    </dd>
-</dl>
+The graph uses a combination of [vocabularies](#vocabularies) to describe two main data structures:
+a [Municipality](#schema-municipality) and a [Collection of municipalities](#schema-collection-municipalities).
 
-<h3 className="bulma-title bulma-is-5">Coordinates systems</h3>
+<h4 id="schema-municipality" className="bulma-title bulma-is-6">Municipality</h4>
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -81,3 +32,93 @@ aliquip ex ea commodo consequat. Duis aute irure dolor in
 reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
 pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
 culpa qui officia deserunt mollit anim id est laborum.
+
+<h4 id="schema-collection-municipalities" className="bulma-title bulma-is-6">Collection of municipalities</h4>
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+aliquip ex ea commodo consequat. Duis aute irure dolor in
+reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+culpa qui officia deserunt mollit anim id est laborum.
+
+<h3 id="vocabularies" className="bulma-title bulma-is-5">Vocabularies</h3>
+
+<dl>
+    <dt>
+        [amv](https://w3id.org/amv#)
+    </dt>
+    <dd>
+        The *Algorithm Metadata Vocabulary* is used to describe metadata about algorithms, such as search algorithms.
+        Our use of `amv:accuracy` pertains to two specific values: In `/name` it denotes the score that was given from
+        a fuzzy search (e.g. "Osl" will return "Os" and "Oslo"), while in `/coords` it denotes the distance between the
+        municipality and the given coordinates. The latter is given as a negative number, so that for both the cases
+        the most relevant result can be sorted by the highest number.
+    </dd>
+    <dt>
+        [cpov](http://data.europa.eu/m8g/)
+    </dt>
+    <dd>
+        The [*Core Public Organisation Vocabulary*](https://semiceu.github.io/CPOV/) provides terms for public
+        organizations, such as municipalities, for which we denote type using `cv:PublicOrganisation`.
+    </dd>
+    <dt>
+        [dc](http://purl.org/dc/terms/)
+    </dt>
+    <dd>
+        *DCMI Metadata Terms* provide a plethora of terms that are useful for metadata, and we make use of
+        `dc:identifier` to denote the municipality number and `dc:description` to denote the name of the municipality.
+    </dd>
+    <dt>
+        [rdf](http://www.w3.org/1999/02/22-rdf-syntax-ns#)
+    </dt>
+    <dd>
+        This is the core vocabulary for RDF, and is used in all RDF graphs.
+    </dd>
+    <dt>
+        [schema](https://schema.org/)
+    </dt>
+    <dd>
+        The *Schema.org vocabulary* is the product of the on-going work of [schema.org](https://schema.org/), a
+        collaborative project on structured data. We use `schema:latitude` and `schema:longitude` as the best
+        approximation of our representation of coordinates. Specifically we refer to their definition in the
+        [ETRS89](https://en.wikipedia.org/wiki/European_Terrestrial_Reference_System_1989) coordinates system (should
+        work well within Europe).
+    </dd>
+</dl>
+
+> The prefix *kommunenummer* that you see in some of the results is not a vocabulary, but simply a shorthand for the
+base URL from which data for all municipalities were originally retrieved. (Meaning you can use this URL to retrieve
+that data if needed.)
+
+There are also some vocabularies used in
+the [original dataset](https://github.com/megoth-capgemini/municipalities-coordinates/blob/main/kommunenummer.rdf) that
+we chose to not use in our service.
+
+<dl>
+    <dt>
+        [adms](https://www.w3.org/ns/legacy_adms#)
+    </dt>
+    <dd>
+        The original dataset also contained historical municipalities that were "active" anymore, and to denote their
+        status they used `adms#status`. Our dataset contains only organizationally active municipalities, so we didn't
+        need that term. (Also, the vocabulary is deprecated, so we didn't want to continue the use of it.)
+    </dd>
+    <dt>
+        [dcat](https://www.w3.org/ns/dcat#)
+    </dt>
+    <dd>
+        The *DCAT 3 Vocabulary* was used in combination with `dc:Temporal` to describe periods of time that the
+        municipality had the given status.
+    </dd>
+    <dt>
+        [skos](http://www.w3.org/2004/02/skos/core#)
+    </dt>
+    <dd>
+        The *Simple Knowledge Organization System* is a common data model for sharing and linking knowledge
+        organization systems. In the original dataset they used `skos:Concept` as type for the municipalities, and
+        `skos:prefLabel` to denote their name. They used some other terms as well, but in the end we felt they didn't
+        contribute any vital information for our service that wasn't covered by other vocabularies.
+    </dd>
+</dl>
