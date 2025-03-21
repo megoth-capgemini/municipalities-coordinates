@@ -64,11 +64,21 @@ def open_index():
 def get_linked_response(results: Results, base_url: str):
     graph = Graph()
     base = URIRef(base_url)
-    graph.add((base, RDF.type, RDF.Seq))
+    graph.add((base, RDF.type, RDF.List))
 
     for i, result in enumerate(results):
         municipality = URIRef(result.get("url"))
-        graph.add((base, URIRef(f"{str(RDF)}_{i}"), municipality))
+        graph.add((base, RDF.first, municipality))
+        if i < len(results) - 1:
+            # adding new base as next part in list
+            new_base = URIRef(f"{base_url}#{i}")
+            graph.add((new_base, RDF.type, RDF.List))
+            graph.add((base, RDF.rest, new_base))
+            base = new_base
+        else:
+            # ending list
+            graph.add((base, RDF.rest, RDF.nil))
+        # adding data on municipality
         graph.add((municipality, RDF.type, M8G.PublicOrganisation))
         graph.add((municipality, DC.identifier, (Literal(result["id"]))))
         graph.add((municipality, SKOS.prefLabel, (Literal(result["name"]))))
