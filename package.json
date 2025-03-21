@@ -1,6 +1,7 @@
 {
   "name": "municipalities-coordinates",
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "poetry run python build.py && npm run build-web",
@@ -14,6 +15,8 @@
   "description": "A simple setup for getting a list of Norwegian municipalities and their coordinates",
   "devDependencies": {
     "@ldo/cli": "^0.0.1-alpha.32",
+    "@mdx-js/react": "^3.1.0",
+    "@mdx-js/rollup": "^3.1.0",
     "@types/n3": "^1.21.1",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.11",

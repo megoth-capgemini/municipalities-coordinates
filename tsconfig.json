@@ -23,6 +23,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": []
+    "typeRoots": [
+      "node_modules/@types",
+      "typings"
+    ]
   }
 }

@@ -41,7 +41,7 @@ code {
 dl {
     display: grid;
     gap: 0 1ch;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: min-content 1fr;
 }
 
 dt {
