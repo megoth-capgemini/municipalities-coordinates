@@ -34,7 +34,7 @@ def search_response(request: Request, results):
             "lat": result["lat"],
             "long": result["long"],
             "url": result["url"],
-            "score": result["score"],
+            "accuracy": result["accuracy"],
         } for result in results])
     graph = get_linked_response(results, str(request.url))
     serialization = serialize(graph, requested_format)

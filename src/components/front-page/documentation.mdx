@@ -16,11 +16,14 @@ import Shapes from "../shapes";
     on place names, developed by the [Norwegian Mapping Authority](https://www.kartverket.no/)), providing
     municipalities with their name, municipality number, and coordinates.
 
-    The data is expressed as a graph that can be downloaded as Turtle from
-    the [code
-    repository](https://github.com/megoth-capgemini/municipalities-coordinates/blob/main/kommunenummer-koordinater.ttl).
-    Do note that the vocabularies used are slightly different from what is exposed through the service, as explained in
-    the section on [vocabularies](#vocabularies).
+    You can download the data through the two apis, `/name` and `/coords`, using any of the supported formats. Although
+    JSON is not a valid graph serialization format, it is more easily understood by most people, so we chose to make it
+    default.
+
+    The complete dataset is available in
+    [Turtle](https://github.com/megoth-capgemini/municipalities-coordinates/blob/main/kommunenummer-koordinater.ttl) if
+    you want to the whole graph. Do note that the vocabularies used are slightly different from what is exposed through
+    the service, as explained in the section on [vocabularies](#vocabularies).
 
     <h3 className="bulma-title bulma-is-5">Schema</h3>
 
@@ -44,7 +47,7 @@ import Shapes from "../shapes";
 
     <ul>
         <li>
-            <span>**Municipalities**</span>
+            <span>**Municipalities** (described in `shape:Municipality`)</span>
             <ul>
                 <li>
                     ... are of type `cpov:PublicOrganization`
@@ -68,7 +71,7 @@ import Shapes from "../shapes";
             </ul>
         </li>
         <li>
-            <span>**Collections**</span>
+            <span>**Collections** (described in `shape:MunicipalityCollection`)</span>
             <ul>
                 <li>
                     ... are of type `rdf:List`

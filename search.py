@@ -41,8 +41,8 @@ schema = Schema(url=TEXT(stored=True),
 
 
 class MyFuzzyTerm(FuzzyTerm):
-    def __init__(self, fieldname, text, boost=1.0, maxdist=1, prefixlength=1, constantscore=True):
-        super(MyFuzzyTerm, self).__init__(fieldname, text, boost, maxdist, prefixlength, constantscore)
+    def __init__(self, fieldname, text, boost=1.0, maxdist=1, prefixlength=1, constantaccuracy=True):
+        super(MyFuzzyTerm, self).__init__(fieldname, text, boost, maxdist, prefixlength, constantaccuracy)
 
 
 def get_graph():
@@ -84,7 +84,7 @@ def get_linked_response(results: Results, base_url: str):
         graph.add((municipality, DCTERMS.description, (Literal(result["name"]))))
         graph.add((municipality, SCHEMA.latitude, (Literal(result["lat"]))))
         graph.add((municipality, SCHEMA.longitude, (Literal(result["long"]))))
-        graph.add((municipality, AMV.accuracy, (Literal(result["score"]))))
+        graph.add((municipality, AMV.accuracy, (Literal(result["accuracy"]))))
 
     return graph
 
@@ -109,8 +109,8 @@ def search_municipality_coords(lat: float, long: float):
         "lat": municipality["lat"],
         "long": municipality["long"],
         "url": municipality["url"],
-        "score": float(distance.distance((lat, long), (municipality["lat"], municipality["long"])).kilometers) * -1,
-    } for municipality in municipalities], key=lambda d: d["score"] * -1)[:5]
+        "accuracy": float(distance.distance((lat, long), (municipality["lat"], municipality["long"])).kilometers) * -1,
+    } for municipality in municipalities], key=lambda d: d["accuracy"] * -1)[:5]
 
 
 def search_municipality_name(index: FileIndex, query_string):
@@ -122,7 +122,7 @@ def search_municipality_name(index: FileIndex, query_string):
         "lat": row.get("lat"),
         "long": row.get("long"),
         "url": row.get("url"),
-        "score": row.score,
+        "accuracy": row.score,
     } for row in index.searcher().search(query)]
 
 

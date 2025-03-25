@@ -23,6 +23,7 @@ export default function Shapes() {
         <ul>
           {tabs.map((tab) => (
             <li
+              key={tab.label}
               className={clsx({ "bulma-is-active": tab.label === activeTab })}
             >
               <a onClick={() => setActiveTab(tab.label)}>{tab.label}</a>
