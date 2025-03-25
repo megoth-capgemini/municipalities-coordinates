@@ -2,16 +2,20 @@ import { LdoJsonldContext } from "@ldo/jsonld-dataset-proxy";
 
 /**
  * =============================================================================
- * municipalitiesContext: JSONLD Context for municipalities
+ * kommunenummerMunicipalityContext: JSONLD Context for kommunenummerMunicipality
  * =============================================================================
  */
-export const municipalitiesContext: LdoJsonldContext = {
+export const kommunenummerMunicipalityContext: LdoJsonldContext = {
+  type: {
+    "@id": "@type",
+    "@type": "http://www.w3.org/2004/02/skos/core#Concept",
+  },
   identifier: {
     "@id": "http://purl.org/dc/terms/identifier",
     "@type": "http://www.w3.org/2001/XMLSchema#string",
   },
-  prefLabel: {
-    "@id": "http://www.w3.org/2004/02/skos/core#prefLabel",
+  description: {
+    "@id": "http://purl.org/dc/terms/description",
     "@type": "http://www.w3.org/2001/XMLSchema#string",
   },
   status: {

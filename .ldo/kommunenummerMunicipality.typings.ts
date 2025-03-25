@@ -2,7 +2,7 @@ import { ContextDefinition } from "jsonld";
 
 /**
  * =============================================================================
- * Typescript Typings for municipalities
+ * Typescript Typings for kommunenummerMunicipality
  * =============================================================================
  */
 
@@ -12,8 +12,9 @@ import { ContextDefinition } from "jsonld";
 export interface Municipality {
   "@id"?: string;
   "@context"?: ContextDefinition;
+  type: string;
   identifier: string;
-  prefLabel: string;
+  description: string;
   status: string;
   latitude: string;
   longitude: string;

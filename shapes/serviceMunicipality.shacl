@@ -1,0 +1,68 @@
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <https://schema.org/>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<https://nomun.no/shapes#Municipality>
+    a sh:NodeShape ;
+    sh:property 
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path <https://w3id.org/amv#accuracy> ;
+        ] ,
+        [
+            sh:datatype xsd:float ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path schema:longitude ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path dcterms:description ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path dcterms:identifier ;
+        ] ,
+        [
+            sh:datatype xsd:float ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path schema:latitude ;
+        ] ;
+    sh:targetClass <http://data.europa.eu/m8g/PublicOrganisation> ;
+.
+
+<https://nomun.no/shapes#MunicipalityCollection>
+    a sh:NodeShape ;
+    sh:property 
+        [
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:or (
+                
+                [
+                    sh:node <https://nomun.no/shapes#MunicipalityCollection> ;
+                ]
+                
+                [
+                    sh:datatype () ;
+                ]
+            ) ;
+            sh:path rdf:rest ;
+        ] ,
+        [
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:node <https://nomun.no/shapes#Municipality> ;
+            sh:path rdf:first ;
+        ] ;
+    sh:targetClass rdf:List ;
+.

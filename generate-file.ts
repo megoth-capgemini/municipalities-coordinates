@@ -2,12 +2,14 @@ import fs from "fs";
 import path from "path";
 import { createLdoDataset, parseRdf, serialize } from "@ldo/ldo";
 import dataFactory from "@rdfjs/data-model";
-import { MunicipalityShapeType } from "./.ldo/municipalities.shapeTypes";
-import { Municipality } from "./.ldo/municipalities.typings";
+import { MunicipalityShapeType } from "./.ldo/kommunenummerMunicipality.shapeTypes";
+import { Municipality } from "./.ldo/kommunenummerMunicipality.typings";
 import { writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
-const documentToParse = path.join(__dirname, "kommunenummer.ttl");
-const documentToWrite = path.join(__dirname, "kommunenummer-koordinater.ttl");
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const documentToParse = path.join(dirname, "kommunenummer.ttl");
+const documentToWrite = path.join(dirname, "kommunenummer-koordinater.ttl");
 const identifier = "http://purl.org/dc/terms/identifier";
 const VALID = "Gyldig";
 const VERBOSE = true;
@@ -27,8 +29,8 @@ async function getCoordinates(
   municipality: Municipality,
 ): Promise<Municipality> {
   let simpleNames = [
-    ...municipality.prefLabel.split(" - "),
-    ...municipality.prefLabel.split(" – "),
+    ...municipality.description.split(" - "),
+    ...municipality.description.split(" – "),
   ]
     .filter((name) => name.indexOf(" - ") === -1 && name.indexOf(" – ") === -1)
     .map((name) => name.replace(/\Wi\W(.*)/, ""));
@@ -110,7 +112,7 @@ async function main() {
       municipalitiesWithCoordinates.push(municipality);
       if (!municipality.latitude || !municipality.longitude) {
         console.log(
-          `${i + 1}/${municipalities.length}: Did not find coordinates for ${municipality.prefLabel} (${municipality.identifier})`,
+          `${i + 1}/${municipalities.length}: Did not find coordinates for ${municipality.description} (${municipality.identifier})`,
         );
       }
       await new Promise((resolve) => setTimeout(resolve, 30));

@@ -1,0 +1,26 @@
+PREFIX amv: <https://w3id.org/amv#>
+PREFIX cpov: <http://data.europa.eu/m8g/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <https://schema.org/>
+PREFIX shape: <https://nomun.no/shapes#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+shape:Municipality {
+    rdf:type cpov:PublicOrganisation,
+    dcterms:identifier xsd:string,
+    dcterms:description xsd:string,
+    schema:latitude xsd:float,
+    schema:longitude xsd:float,
+    amv:accuracy xsd:string
+}
+
+shape:MunicipalityCollection {
+    rdf:type rdf:List,
+    rdf:first @shape:Municipality,
+    (
+        rdf:rest @shape:MunicipalityCollection
+        |
+        rdf:rest rdf:nil
+    )
+}

@@ -2,10 +2,10 @@ import { Schema } from "shexj";
 
 /**
  * =============================================================================
- * municipalitiesSchema: ShexJ Schema for municipalities
+ * kommunenummerMunicipalitySchema: ShexJ Schema for kommunenummerMunicipality
  * =============================================================================
  */
-export const municipalitiesSchema: Schema = {
+export const kommunenummerMunicipalitySchema: Schema = {
   type: "Schema",
   shapes: [
     {
@@ -18,6 +18,14 @@ export const municipalitiesSchema: Schema = {
           expressions: [
             {
               type: "TripleConstraint",
+              predicate: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+              valueExpr: {
+                type: "NodeConstraint",
+                datatype: "http://www.w3.org/2004/02/skos/core#Concept",
+              },
+            },
+            {
+              type: "TripleConstraint",
               predicate: "http://purl.org/dc/terms/identifier",
               valueExpr: {
                 type: "NodeConstraint",
@@ -26,7 +34,7 @@ export const municipalitiesSchema: Schema = {
             },
             {
               type: "TripleConstraint",
-              predicate: "http://www.w3.org/2004/02/skos/core#prefLabel",
+              predicate: "http://purl.org/dc/terms/description",
               valueExpr: {
                 type: "NodeConstraint",
                 datatype: "http://www.w3.org/2001/XMLSchema#string",
