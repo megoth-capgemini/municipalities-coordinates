@@ -12,9 +12,9 @@ import Shapes from "../shapes";
     The data is a combination of [the list of municipalities from
     data.norge.no](https://data.norge.no/datasets/978a923c-9ab6-3617-8fd6-6622363454e3)
     and the aggregated responses from [Kartverkets stedsnavn
-    API](https://github.com/megoth-capgemini/municipalities-coordinates) (API for searching
-    on place names, developed by the [Norwegian Mapping Authority](https://www.kartverket.no/)), providing
-    municipalities with their name, municipality number, and coordinates.
+    API](https://api.kartverket.no/stedsnavn/v1/) (API for searching on place names, developed by the [Norwegian Mapping
+    Authority](https://www.kartverket.no/)), providing municipalities with their name, municipality number, and
+    coordinates.
 
     You can download the data through the two apis, `/name` and `/coords`, using any of the supported formats. Although
     JSON is not a valid graph serialization format, it is more easily understood by most people, so we chose to make it
@@ -35,8 +35,8 @@ import Shapes from "../shapes";
 
     There are two competing standards to describe shapes in RDF: [SHACL](https://www.w3.org/TR/shacl/) and
     [ShEx](https://shex.io/shex-semantics/index.html). There's also a compact version of SHACL,
-    [SHACLC](https://w3c.github.io/shacl/shacl-compact-syntax/#rule-propertyShape), that we wanted to use, as it
-    is easier to read than the full-fledged version.
+    [SHACLC](https://w3c.github.io/shacl/shacl-compact-syntax/), that we wanted to use, as it is easier to read than the
+    full-fledged version.
 </div>
 
 <Shapes/>

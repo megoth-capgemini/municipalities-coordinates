@@ -2,7 +2,7 @@ import { ContextDefinition } from "jsonld";
 
 /**
  * =============================================================================
- * Typescript Typings for kommunenummerMunicipality
+ * Typescript Typings for stedsnavn
  * =============================================================================
  */
 

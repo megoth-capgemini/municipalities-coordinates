@@ -2,14 +2,14 @@ import { Schema } from "shexj";
 
 /**
  * =============================================================================
- * serviceMunicipalitySchema: ShexJ Schema for serviceMunicipality
+ * serviceSchema: ShexJ Schema for service
  * =============================================================================
  */
-export const serviceMunicipalitySchema: Schema = {
+export const serviceSchema: Schema = {
   type: "Schema",
   shapes: [
     {
-      id: "https://ldo.js.org/#Municipality",
+      id: "https://nomun.no/shapes#Municipality",
       type: "ShapeDecl",
       shapeExpr: {
         type: "Shape",
@@ -69,7 +69,7 @@ export const serviceMunicipalitySchema: Schema = {
       },
     },
     {
-      id: "https://ldo.js.org/#MunicipalityCollection",
+      id: "https://nomun.no/shapes#MunicipalityCollection",
       type: "ShapeDecl",
       shapeExpr: {
         type: "Shape",
@@ -87,7 +87,7 @@ export const serviceMunicipalitySchema: Schema = {
             {
               type: "TripleConstraint",
               predicate: "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-              valueExpr: "https://ldo.js.org/#Municipality",
+              valueExpr: "https://nomun.no/shapes#Municipality",
             },
             {
               type: "OneOf",
@@ -95,7 +95,7 @@ export const serviceMunicipalitySchema: Schema = {
                 {
                   type: "TripleConstraint",
                   predicate: "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-                  valueExpr: "https://ldo.js.org/#MunicipalityCollection",
+                  valueExpr: "https://nomun.no/shapes#MunicipalityCollection",
                 },
                 {
                   type: "TripleConstraint",

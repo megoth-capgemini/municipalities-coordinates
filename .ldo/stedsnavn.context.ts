@@ -2,16 +2,13 @@ import { LdoJsonldContext } from "@ldo/jsonld-dataset-proxy";
 
 /**
  * =============================================================================
- * serviceMunicipalityContext: JSONLD Context for serviceMunicipality
+ * stedsnavnContext: JSONLD Context for stedsnavn
  * =============================================================================
  */
-export const serviceMunicipalityContext: LdoJsonldContext = {
+export const stedsnavnContext: LdoJsonldContext = {
   type: {
     "@id": "@type",
-    "@type": [
-      "http://data.europa.eu/m8g/PublicOrganisation",
-      "http://www.w3.org/1999/02/22-rdf-syntax-ns#List",
-    ],
+    "@type": "http://www.w3.org/2004/02/skos/core#Concept",
   },
   identifier: {
     "@id": "http://purl.org/dc/terms/identifier",
@@ -21,6 +18,10 @@ export const serviceMunicipalityContext: LdoJsonldContext = {
     "@id": "http://purl.org/dc/terms/description",
     "@type": "http://www.w3.org/2001/XMLSchema#string",
   },
+  status: {
+    "@id": "http://www.w3.org/ns/adms#status",
+    "@type": "http://www.w3.org/2001/XMLSchema#string",
+  },
   latitude: {
     "@id": "https://schema.org/latitude",
     "@type": "http://www.w3.org/2001/XMLSchema#float",
@@ -28,17 +29,5 @@ export const serviceMunicipalityContext: LdoJsonldContext = {
   longitude: {
     "@id": "https://schema.org/longitude",
     "@type": "http://www.w3.org/2001/XMLSchema#float",
-  },
-  accuracy: {
-    "@id": "https://w3id.org/amv#accuracy",
-    "@type": "http://www.w3.org/2001/XMLSchema#string",
-  },
-  first: {
-    "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-    "@type": "@id",
-  },
-  rest: {
-    "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-    "@type": ["@id", "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"],
   },
 };

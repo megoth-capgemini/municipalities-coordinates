@@ -2,14 +2,14 @@ import { Schema } from "shexj";
 
 /**
  * =============================================================================
- * kommunenummerMunicipalitySchema: ShexJ Schema for kommunenummerMunicipality
+ * stedsnavnSchema: ShexJ Schema for stedsnavn
  * =============================================================================
  */
-export const kommunenummerMunicipalitySchema: Schema = {
+export const stedsnavnSchema: Schema = {
   type: "Schema",
   shapes: [
     {
-      id: "https://ldo.js.org/#Municipality",
+      id: "https://nomun.no/shapes#Municipality",
       type: "ShapeDecl",
       shapeExpr: {
         type: "Shape",

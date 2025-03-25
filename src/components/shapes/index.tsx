@@ -1,6 +1,6 @@
-import codeShaclC from "../../../shapes/serviceMunicipality.shaclc?raw";
-import codeShacl from "../../../shapes/serviceMunicipality.shacl?raw";
-import codeShex from "../../../shapes/serviceMunicipality.shex?raw";
+import codeShaclC from "../../../shapes/service.shaclc?raw";
+import codeShacl from "../../../shapes/service.shacl?raw";
+import codeShex from "../../../shapes/service.shex?raw";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import usePrism from "../../hooks/use-prism";

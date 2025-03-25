@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import { createLdoDataset, parseRdf, serialize } from "@ldo/ldo";
 import dataFactory from "@rdfjs/data-model";
-import { MunicipalityShapeType } from "./.ldo/kommunenummerMunicipality.shapeTypes";
-import { Municipality } from "./.ldo/kommunenummerMunicipality.typings";
+import { MunicipalityShapeType } from "./.ldo/stedsnavn.shapeTypes";
+import { Municipality } from "./.ldo/stedsnavn.typings";
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 

@@ -1,7 +1,7 @@
 from shaclc import shaclc_to_graph
 
-read_path = 'shapes/serviceMunicipality.shaclc'
-write_path = 'shapes/serviceMunicipality.shacl'
+read_path = 'shapes/service.shaclc'
+write_path = 'shapes/service.shacl'
 with open(read_path, 'r') as read_file:
     content = read_file.read()
     graph = shaclc_to_graph(content)

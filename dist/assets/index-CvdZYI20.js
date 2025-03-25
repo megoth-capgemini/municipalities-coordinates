@@ -188,10 +188,10 @@ shape:MunicipalityCollection {
 to understand the technical details of how the service is developed and operated, check out the `,p.jsx(i.a,{href:"https://github.com/megoth-capgemini/municipalities-coordinates",children:`code
 repository on GitHub`}),"."]}),p.jsx("h3",{id:"data",className:"bulma-title bulma-is-5",children:"Data"}),p.jsxs(i.p,{children:["The data is a combination of ",p.jsx(i.a,{href:"https://data.norge.no/datasets/978a923c-9ab6-3617-8fd6-6622363454e3",children:`the list of municipalities from
 data.norge.no`}),`
-and the aggregated responses from `,p.jsx(i.a,{href:"https://github.com/megoth-capgemini/municipalities-coordinates",children:`Kartverkets stedsnavn
-API`}),` (API for searching
-on place names, developed by the `,p.jsx(i.a,{href:"https://www.kartverket.no/",children:"Norwegian Mapping Authority"}),`), providing
-municipalities with their name, municipality number, and coordinates.`]}),p.jsxs(i.p,{children:["You can download the data through the two apis, ",p.jsx(i.code,{children:"/name"})," and ",p.jsx(i.code,{children:"/coords"}),`, using any of the supported formats. Although
+and the aggregated responses from `,p.jsx(i.a,{href:"https://api.kartverket.no/stedsnavn/v1/",children:`Kartverkets stedsnavn
+API`})," (API for searching on place names, developed by the ",p.jsx(i.a,{href:"https://www.kartverket.no/",children:`Norwegian Mapping
+Authority`}),`), providing municipalities with their name, municipality number, and
+coordinates.`]}),p.jsxs(i.p,{children:["You can download the data through the two apis, ",p.jsx(i.code,{children:"/name"})," and ",p.jsx(i.code,{children:"/coords"}),`, using any of the supported formats. Although
 JSON is not a valid graph serialization format, it is more easily understood by most people, so we chose to make it
 default.`]}),p.jsxs(i.p,{children:[`The complete dataset is available in
 `,p.jsx(i.a,{href:"https://github.com/megoth-capgemini/municipalities-coordinates/blob/main/kommunenummer-koordinater.ttl",children:"Turtle"}),` if
@@ -200,8 +200,8 @@ the service, as explained in the section on `,p.jsx(i.a,{href:"#vocabularies",ch
 and a Collection of municipalities. To describe these structures we can use shapes, which allow us to add
 constraints to the "shape" of a graph and determine whether it is valid.`]}),p.jsx("h4",{id:"schema-municipality",className:"bulma-title bulma-is-6",children:"Shapes"}),p.jsxs(i.p,{children:["There are two competing standards to describe shapes in RDF: ",p.jsx(i.a,{href:"https://www.w3.org/TR/shacl/",children:"SHACL"}),` and
 `,p.jsx(i.a,{href:"https://shex.io/shex-semantics/index.html",children:"ShEx"}),`. There's also a compact version of SHACL,
-`,p.jsx(i.a,{href:"https://w3c.github.io/shacl/shacl-compact-syntax/#rule-propertyShape",children:"SHACLC"}),`, that we wanted to use, as it
-is easier to read than the full-fledged version.`]})]}),`
+`,p.jsx(i.a,{href:"https://w3c.github.io/shacl/shacl-compact-syntax/",children:"SHACLC"}),`, that we wanted to use, as it is easier to read than the
+full-fledged version.`]})]}),`
 `,p.jsx(gb,{}),`
 `,p.jsxs("div",{className:"bulma-content",children:[p.jsx(i.p,{children:"Regardless of which syntax you prefer, the shapes all mean the same:"}),p.jsxs("ul",{children:[p.jsxs("li",{children:[p.jsxs("span",{children:[p.jsx(i.strong,{children:"Municipalities"})," (described in ",p.jsx(i.code,{children:"shape:Municipality"}),")"]}),p.jsxs("ul",{children:[p.jsx("li",{children:p.jsxs(i.p,{children:["... are of type ",p.jsx(i.code,{children:"cpov:PublicOrganization"})]})}),p.jsx("li",{children:p.jsxs(i.p,{children:["... have one triple using ",p.jsx(i.code,{children:"dcterms:identifier"})," (denoting municipality number)"]})}),p.jsx("li",{children:p.jsxs(i.p,{children:["... have one triple using ",p.jsx(i.code,{children:"dcterms:description"})," (denoting municipality name)"]})}),p.jsx("li",{children:p.jsxs(i.p,{children:["... have one triple using ",p.jsx(i.code,{children:"schema:latitude"})," (denoting ETRS89 latitude number)"]})}),p.jsx("li",{children:p.jsxs(i.p,{children:["... have one triple using ",p.jsx(i.code,{children:"schema:longitude"})," (denoting ETRS89 longitude number)"]})}),p.jsx("li",{children:p.jsxs(i.p,{children:["... have one triple using ",p.jsx(i.code,{children:"amv:accuracy"}),` (higher denoting increased accuracy in relation to the
 search)`]})})]})]}),p.jsxs("li",{children:[p.jsxs("span",{children:[p.jsx(i.strong,{children:"Collections"})," (described in ",p.jsx(i.code,{children:"shape:MunicipalityCollection"}),")"]}),p.jsxs("ul",{children:[p.jsx("li",{children:p.jsxs(i.p,{children:["... are of type ",p.jsx(i.code,{children:"rdf:List"})]})}),p.jsx("li",{children:p.jsxs(i.p,{children:["... have one triple using ",p.jsx(i.code,{children:"rdf:first"}),", which must follow the shape of ",p.jsx(i.code,{children:"shape:Municipality"})]})}),p.jsx("li",{children:p.jsxs(i.p,{children:["... have one triple using ",p.jsx(i.code,{children:"rdf:rest"}),`, which is either following the shape of
